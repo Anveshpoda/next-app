@@ -10,52 +10,63 @@ import Image from 'next/image';
 import DashboardStyles, { imgStyle } from '@/styles/dashboard';
 import { PrismaClient } from '@prisma/client'
 import Header from '@/components/header';
+import Atom from '@/components/UI/atom';
+import { createApi } from 'unsplash-js';
+import SearchBar from '@/components/UI/searchBar';
 
 
 const Dashboard = () => {
-    const [search, setSearch] = useState('')
+    const [bgI, setBackground] = useState('')
 
-    const gSearch = () => {
-        console.log('search >> ', search)
-        search && (window.location.href = `https://www.google.com/search?q=${search}`)
-    }
 
-    const imgStyle = { animation: 'App-logo-spin infinite 20s linear', margin: 'auto' };
+    useEffect(()=>{
+        const unsplash = createApi({
+            accessKey: 'uwzK1c6P03jOwNxFaynmjcNOg54jZ6R8coN83OxYkaM',
+            // `fetch` options to be sent with every request
+            // headers: { 'X-Custom-Header': 'foo' },
+        });
 
+        // unsplash.photos.get(
+        //     { photoId: '123' },
+        //     // `fetch` options to be sent only with _this_ request
+        //     { headers: { 'X-Custom-Header-2': 'bar' } },
+        // );
+
+        unsplash.photos.get({ photoId: '_RBcxo9AU-U' }).then(result => {
+            switch (result.type) {
+              case 'error':
+                console.log('error occurred: ', result.errors[0]);
+              case 'success':
+                const photo = result.response;
+                setBackground(photo.urls.full)
+                console.log(photo);
+            }
+          });
+    },[])
 
     return (
         <div>
-            <Header/>
+            <Header />
             <div style={{ height: 500 }}>
-                <div className='divCenter'>
-                    <div style={{ justifyContent: 'center' }}>
 
-                        <div style={{ display: 'flex', marginBottom: 20 }}>
-                            <Image src={logo} style={{ ...imgStyle }} width={200} className="applogo" alt="logo" />
-                            <div className='child'><main>
-                                <div className="atom">
-                                    <div className="electron"></div>
-                                    <div className="electron-alpha"></div>
-                                    <div className="electron-omega"></div>
-                                </div>
-                            </main></div>
+                <div className='divCenter'>
+                    <div style={{ padding: '50px', backgroundColor: '#efecec80', borderRadius: 10 }}>
+
+                        <div style={{ display: 'flex', marginBottom: 70 }}>
+                            <div style={{ margin: 'auto' }}><Atom /></div>
                         </div>
                         {/* <img src={logo} className="App-logo" alt="logo" /> */}
-                        <Paper component="form" onSubmit={(e, n) => { e.preventDefault(); gSearch() }} sx={{ p: '2px 6px', display: 'flex', alignItems: 'center', width: 450, borderRadius: 10 }}>
-                            <InputBase sx={{ ml: 1, flex: 1 }}
-                                placeholder="Search Google"
-                                inputProps={{ 'aria-label': 'search google maps' }}
-                                onChange={e => setSearch(e.target.value)}
-                            />
-                            <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                                <SearchIcon />
-                            </IconButton>
-                        </Paper>
+                        <SearchBar/>
 
                     </div>
                 </div>
 
-
+                <style jsx global>{`
+                    #__next{
+                        background: url(${bgI});
+                        background-size: cover;
+                    }
+                `}</style>
                 <style jsx>{DashboardStyles}</style>
             </div>
         </div>
