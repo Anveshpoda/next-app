@@ -12,7 +12,7 @@ const SearchBar = () => {
     }
 
     return (
-        <Paper component="form" onSubmit={(e, n) => { e.preventDefault(); gSearch() }} sx={{ p: '2px 6px', display: 'flex', alignItems: 'center', width: 450, borderRadius: 10 }}>
+        <Paper autoFocus component="form" onSubmit={(e, n) => { e.preventDefault(); gSearch() }} sx={{ p: '2px 6px', display: 'flex', alignItems: 'center', width: 450, borderRadius: 10 }}>
             <InputBase sx={{ ml: 1, flex: 1 }}
                 placeholder="Search Google"
                 inputProps={{ 'aria-label': 'search google maps' }}
