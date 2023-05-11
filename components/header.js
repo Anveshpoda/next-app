@@ -14,7 +14,7 @@ const Header = () => {
             <div style={{ padding: 5 }}> <SearchBar /></div>
 
             <div style={{ margin: '8px 18px', width: '100%', justifyContent: "end", display: "flex" }}>
-                <Avatar style={{width:45, height:45}} contextMenu='A'>
+                <Avatar style={{width:45, height:45}}>
                     <Image src={pImg} alt={"Anv"} layout="fill" />
                 </Avatar>
             </div>
