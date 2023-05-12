@@ -1,8 +1,8 @@
 body{ margin: 0 }
-#__next{
+/* #__next{
   background:#322e3a; height: 100vh;
   color: white
-}
+} */
 
 .divCenter {
   display: flex;

@@ -1,71 +1,58 @@
-import Cgrid from '@/components/UI/muiGrid2'
-import { Container } from '@mui/material'
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
 import React, { useEffect, useState } from 'react'
-import logo from '../public/logo.svg'
-import Image from 'next/image';
-import DashboardStyles, { imgStyle } from '@/styles/dashboard';
-import { PrismaClient } from '@prisma/client'
+import DashboardStyles from '@/styles/dashboard';
 import Header from '@/components/header';
+import Cgrid from '@/components/UI/muiGrid2'
+import { PrismaClient } from '@prisma/client'
 import Atom from '@/components/UI/atom';
 import { createApi } from 'unsplash-js';
 import SearchBar from '@/components/UI/searchBar';
 
 
 const Dashboard = () => {
-    const [bgI, setBackground] = useState('')
+    const [bgI, setBackground] = useState('https://source.unsplash.com/random/1900x1080/?nature&1')
+
+    useEffect(() => {
+        if ('undefined' != typeof screen) {
+            const intervalId = setInterval(() => {
+                setBackground('https://source.unsplash.com/random/' + screen?.width + 'x' + screen?.height + '?nature&' + Math.random(5))
+                console.log(' >> ', bgI)
+            }, 1000 * 60)
+            // setBackground('https://source.unsplash.com/random/' + screen?.width + 'x' + screen?.height + '?nature')
+            return () => clearInterval(intervalId)
+        }
+
+    }, [])
 
 
-    useEffect(()=>{
-        const unsplash = createApi({
-            accessKey: 'uwzK1c6P03jOwNxFaynmjcNOg54jZ6R8coN83OxYkaM',
-            // `fetch` options to be sent with every request
-            // headers: { 'X-Custom-Header': 'foo' },
-        });
-
-        // unsplash.photos.get(
-        //     { photoId: '123' },
-        //     // `fetch` options to be sent only with _this_ request
-        //     { headers: { 'X-Custom-Header-2': 'bar' } },
-        // );
-
-        unsplash.photos.get({ photoId: '_RBcxo9AU-U' }).then(result => {
-            switch (result.type) {
-              case 'error':
-                console.log('error occurred: ', result.errors[0]);
-              case 'success':
-                const photo = result.response;
-                setBackground(photo.urls.full)
-                console.log(photo);
-            }
-          });
-    },[])
+    useEffect(() => {
+        const img = new Image();
+        img.onload = () => {
+            const body = document.querySelector('body');
+            body.style.backgroundImage = `url(${bgI})`;
+        };
+        img.src = bgI;
+    }, [bgI]);
 
     return (
         <div>
             <Header />
             <div style={{ height: 500 }}>
 
-                <div className='divCenter'>
+                {/* <div className='divCenter'>
                     <div style={{ padding: '50px', backgroundColor: '#efecec80', borderRadius: 10 }}>
 
                         <div style={{ display: 'flex', marginBottom: 70 }}>
                             <div style={{ margin: 'auto' }}><Atom /></div>
                         </div>
-                        {/* <img src={logo} className="App-logo" alt="logo" /> */}
-                        <SearchBar/>
+                        <SearchBar />
 
                     </div>
-                </div>
+                </div> */}
+
+                {/* {console.log('screen.width >> ', screen.width)} */}
 
                 <style jsx global>{`
-                    #__next{
-                        background: url(${bgI});
-                        background-size: cover;
-                    }
+                    body{ background: #322e3a url(${bgI}); background-size: cover }
                 `}</style>
                 <style jsx>{DashboardStyles}</style>
             </div>
