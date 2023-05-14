@@ -52,10 +52,6 @@ const PostmanApi = ({ apis, env }) => {
 
 export const getServerSideProps = async (ctx) => {
 
- const apiKey = 'PMAT-01H0D10ETZ6HMM0306YFF8BW30';
- const apiKey1 = 'PMAK-6460c6d0d527a0002ad6ccff-0f7e4b42ea62c6d38b7025ac548496a779'
-
-
     const url = `https://api.getpostman.com/collections/${process.env.collectionId}`;
     
     // console.log('collectionId >> ',url)
