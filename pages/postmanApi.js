@@ -12,6 +12,19 @@ const PostmanApi = ({ apis, env }) => {
         return color;
     }
 
+    async function updatePostmanRequest(collectionId, requestId, authToken, request) {
+        const url = `https://api.getpostman.com/collections/${collectionId}/requests/${requestId}`;
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(request),
+        });
+        return response.json();
+      }
+
     return (
         <div style={{ display: 'flex' }}>
             <div style={{ flex: 1, padding:5 }}>
@@ -38,24 +51,23 @@ const PostmanApi = ({ apis, env }) => {
 
 
 export const getServerSideProps = async (ctx) => {
-    const apiKey = 'PMAK-6460c6d0d527a0002ad6ccff-0f7e4b42ea62c6d38b7025ac548496a779';
-    // const apiKey = 'PMAT-01H0D10ETZ6HMM0306YFF8BW30';
-    const collectionId = '3319679-4061a5ca-89ff-0149-4aa2-bb77789ccde7';
-    const environmentId = '3319679-42e09299-3cf4-e03d-d150-0aea4d3cf085';
-    const url = `https://api.getpostman.com/collections/${collectionId}`;
+
+    const url = `https://api.getpostman.com/collections/${process.env.collectionId}`;
+    
+    // console.log('collectionId >> ',url)
 
     const response = await fetch(url, {
         headers: {
-            'X-Api-Key': apiKey,
+            'X-Api-Key': process.env.apiKey,
         },
     });
 
     const { collection } = await response.json();
 
-    const environmentApiUrl = `https://api.getpostman.com/environments/${environmentId}`;
+    const environmentApiUrl = `https://api.getpostman.com/environments/${process.env.environmentId}`;
     const environmentApiResponse = await fetch(environmentApiUrl, {
         headers: {
-            'X-Api-Key': apiKey,
+            'X-Api-Key': process.env.apiKey,
         },
     });
 
@@ -69,7 +81,7 @@ export const getServerSideProps = async (ctx) => {
 
 
 
-    const apis = collection.item?.map((item) => {
+    const apis = collection?.item?.map((item) => {
         let api = {
             id: item.id || '',
             name: item.name || '',
@@ -81,7 +93,7 @@ export const getServerSideProps = async (ctx) => {
         if (api.fullReq && api.fullReq.match(/\{\{(.+?)\}\}/)) {
             // console.log(' TEST   >> ', api.request.url.raw.match(/\{\{(.+?)\}\}/)[1])
             api.fullReq = api.fullReq.replace(/\{\{(.+?)\}\}/g, (match, key) => {
-                const value = env.find((item) => item.key === key)?.value;
+                const value = env?.find((item) => item.key === key)?.value;
                 return value ? value : match;
             });
         }
