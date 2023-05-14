@@ -1,4 +1,4 @@
-body{ margin: 0 }
+body{ margin: 0 ; background: url('https://source.unsplash.com/random/1900x1080/?nature'); background-size: cover;}
 /* #__next{
   background:#322e3a; height: 100vh;
   color: white
