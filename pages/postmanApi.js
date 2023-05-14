@@ -52,6 +52,9 @@ const PostmanApi = ({ apis, env }) => {
 
 export const getServerSideProps = async (ctx) => {
 
+const collectionId = "3319679-4061a5ca-89ff-0149-4aa2-bb77789ccde7";
+
+
     const url = `https://api.getpostman.com/collections/${process.env.collectionId}`;
     
     // console.log('collectionId >> ',url)
