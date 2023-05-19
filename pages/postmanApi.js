@@ -1,3 +1,5 @@
+import AddRequestForm from '@/components/postman/addRequest';
+import ShowRequest from '@/components/postman/showRequest';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 
@@ -5,46 +7,29 @@ import { useState } from 'react';
 const PostmanApi = ({ apis, env }) => {
     const [selectedApi, setSelectedApi] = useState(null);
 
-    function randomColor() {
-        let hex = Math.floor(Math.random() * 0xFFFFFF);
-        let color = "#" + hex.toString(16);
-
-        return color;
-    }
-
-    async function updatePostmanRequest(collectionId, requestId, authToken, request) {
-        const url = `https://api.getpostman.com/collections/${collectionId}/requests/${requestId}`;
-        const response = await fetch(url, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(request),
-        });
-        return response.json();
-      }
-
     return (
-        <div style={{ display: 'flex' }}>
-            <div style={{ flex: 1, padding:5 }}>
-                <h1>API List</h1>
-                {/* <ul> */}
-                {apis?.map((api) => (
-                    // <li key={api.id} style={{padding:5}}>
-                    <Button key={api.id} style={{ margin: 5, backgroundColor:"blueviolet" }} variant='contained' onClick={() => setSelectedApi(api)}>{api.name}</Button>
-                    // </li>
-                ))}
-                {/* </ul> */}
-            </div>
-            {selectedApi && (
-                <div style={{ background: '#ffffff85', padding: 10 }}>
-                    <h2>{selectedApi.name}</h2>
-                    <a href={selectedApi.fullReq} target='_blank'>{selectedApi.fullReq}</a>
-                    <p>{selectedApi.description}</p>
-                    <pre style={{fontWeight:''}}>{JSON.stringify(selectedApi.request, null, 2)}</pre>
+        <div>
+
+            <div style={{ display: 'flex' }}>
+                <div style={{ padding: 5, width: 350, overflowY: 'hidden', height: '100%' }}>
+                    {/* <h1>API List</h1> */}
+
+                    {apis?.map((api) => (
+                        <button key={api.id} className='apiButton' style={{}} onClick={() => setSelectedApi(api)}>{api.name}</button>
+                    ))}
+                    <button className='apiButton' style={{}} onClick={() => { }}>Add New</button><br />
+                    <Button variant="outlined" > Add New </Button>
+
+                    {/* <AddRequestForm /> */}
                 </div>
-            )}
+                <ShowRequest selectedApi={selectedApi}/>
+            </div>
+            <style jsx>{`
+                .apiButton{
+                    padding:10px 20px; width:100%; font-weight:bold; color:black; background:linear-gradient(#9b9b9b85, #ffffff85,#9b9b9b85);  
+                    border-bottom:solid 1px rgb(104 104 104); border:0; font-size: 16px;
+                }
+            `}</style>
         </div>
     );
 }
@@ -53,32 +38,19 @@ const PostmanApi = ({ apis, env }) => {
 export const getServerSideProps = async (ctx) => {
 
     const url = `https://api.getpostman.com/collections/${process.env.collectionId}`;
-    
+    const environmentApiUrl = `https://api.getpostman.com/environments/${process.env.environmentId}`;
+    const headers = { 'X-Api-Key': process.env.apiKey }
+
     // console.log('collectionId >> ',url)
 
-    const response = await fetch(url, {
-        headers: {
-            'X-Api-Key': process.env.apiKey,
-        },
-    });
+    const response = await fetch(url, { headers });
+    const environmentApiResponse = await fetch(environmentApiUrl, { headers });
 
     const { collection } = await response.json();
-
-    const environmentApiUrl = `https://api.getpostman.com/environments/${process.env.environmentId}`;
-    const environmentApiResponse = await fetch(environmentApiUrl, {
-        headers: {
-            'X-Api-Key': process.env.apiKey,
-        },
-    });
-
     const { environment } = await environmentApiResponse.json();
 
 
-    const env = environment?.values?.map((item) => ({
-        key: item.key || '',
-        value: item.value || '',
-    }));
-
+    const env = environment?.values?.map((item) => ({ key: item.key || '', value: item.value || '' }));
 
 
     const apis = collection?.item?.map((item) => {
