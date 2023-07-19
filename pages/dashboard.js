@@ -12,9 +12,9 @@ const Dashboard = () => {
     const [bgI, setBackground] = useState('https://source.unsplash.com/random/1900x1080/?nature&1')
 
     useEffect(() => {
-        if ('undefined' != typeof screen) {
+        if ('undefined' != typeof (screen || window)) {
             const intervalId = setInterval(() => {
-                setBackground('https://source.unsplash.com/random/' + screen?.width + 'x' + screen?.height + '?nature&' + Math.random(5))
+                setBackground('https://source.unsplash.com/random/' + (screen || window)?.width + 'x' + (screen || window)?.height + '?nature&' + Math.random(5))
                 console.log(' >> ', bgI)
             }, 1000 * 60)
             // setBackground('https://source.unsplash.com/random/' + screen?.width + 'x' + screen?.height + '?nature')
@@ -26,10 +26,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const img = new Image();
-        img.onload = () => {
-            const body = document.querySelector('body');
-            body.style.backgroundImage = `url(${bgI})`;
-        };
+        img.onload = () => { const body = document.querySelector('body'); body.style.backgroundImage = `url(${bgI})`; };
         img.src = bgI;
     }, [bgI]);
 
