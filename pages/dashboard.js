@@ -63,9 +63,9 @@ export async function getServerSideProps(context) {
     // try {
     //     const user = await prisma.user.create({
     //         data: {
-    //             name: 'Anvesh',
-    //             email: 'podaanvesh@gmail.com',
-    //             mobile: "9492243961"
+    //             name: 'Viraj',
+    //             email: 'viraj.joshi@gmail.com',
+    //             mobile: "9637715436"
     //         },
     //     })
     //     console.log(user)
