@@ -3,31 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model user {
-  id     Int    @id @default(autoincrement())
-  name   String @db.VarChar(30)
-  mobile String @unique @db.VarChar(11)
-  email  String @db.VarChar(30)
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 }
-
-
-model Usr {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
-}
-
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    Usr    @relation(fields: [authorId], references: [id])
-  authorId  Int
-}
-
