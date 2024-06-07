@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-export default function El_beta() {
+
+const El_new = () => {
     const [output, setOutput] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState('');
@@ -35,7 +36,8 @@ export default function El_beta() {
                 {output && <pre>{output}</pre>}
                 {error && <pre style={{ color: 'red' }}>{error}</pre>}
             </div>}
-
         </div>
     );
 }
+
+export default El_new;
