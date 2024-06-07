@@ -1,25 +1,28 @@
-// pages/index.js
 import { useState } from 'react';
 
 export default function EL() {
-    const [output, setOutput] = useState('');
+  const [output, setOutput] = useState('');
+  const [error, setError] = useState('');
 
-    const runScript = async () => {
-        const res = await fetch('/api/beta');
-        const data = await res.json();
-        console.log('data >> ',res)
-        if (res.ok) {
-            setOutput(data.output);
-        } else {
-            setOutput(`Error: ${data.error}`);
-        }
-    };
+  const runScript = async () => {
+    setOutput('');
+    setError('');
 
-    return (
-        <div style={{ padding: 15 }}>
-            <h1>Run Script Example</h1>
-            <button onClick={runScript}>Run Script</button>
-            {output && <pre>{output}</pre>}
-        </div>
-    );
+    const res = await fetch('/api/run-script');
+    const data = await res.json();
+    if (res.ok) {
+      setOutput(data.output);
+    } else {
+      setError(data.error);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Run Script Example</h1>
+      <button onClick={runScript}>Run Script</button>
+      {output && <pre>{output}</pre>}
+      {error && <pre style={{ color: 'red' }}>{error}</pre>}
+    </div>
+  );
 }
