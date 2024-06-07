@@ -18,7 +18,7 @@ export default function Home() {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
       if (value) {
-        setOutput((prevOutput) => prevOutput + decoder.decode(value));
+        setOutput((prevOutput) => prevOutput + decoder.decode(value, { stream: true }));
       }
     }
 
