@@ -25,11 +25,13 @@ export default function handler(req, res) {
   // Stream stdout
   scriptProcess.stdout.on('data', (data) => {
     res.write(data);
+    res.flushHeaders(); // Force flushing of headers
   });
 
   // Stream stderr
   scriptProcess.stderr.on('data', (data) => {
     res.write(data);
+    res.flushHeaders(); // Force flushing of headers
   });
 
   // Handle process exit
