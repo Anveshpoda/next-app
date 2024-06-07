@@ -32,7 +32,7 @@ const El_new = () => {
         <div>
             <h1 style={{ padding: 10 }}>Run Script Example</h1>
             <button onClick={runScript}>Run Script</button>
-            {(output || error) && <div style={{ maxHeight: 'calc( 100vh - 154px)', overflow: 'scroll', width: '100%' }}>
+            {(output || error) && <div className="tranBg" style={{ maxHeight: 'calc( 100vh - 154px)', overflow: 'scroll', width: '100%' }}>
                 {output && <pre>{output}</pre>}
                 {error && <pre style={{ color: 'red' }}>{error}</pre>}
             </div>}
