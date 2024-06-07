@@ -8,7 +8,7 @@ export default function EL() {
     setOutput('');
     setError('');
 
-    const res = await fetch('/api/run-script');
+    const res = await fetch('/api/beta');
     const data = await res.json();
     if (res.ok) {
       setOutput(data.output);
