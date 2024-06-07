@@ -1,9 +1,9 @@
-// pages/index.js
 import { useState } from 'react';
 
-export default function Home() {
+export default function El_beta() {
     const [output, setOutput] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState('');
 
     const runScript = async () => {
         setOutput('');
@@ -36,18 +36,13 @@ export default function Home() {
                 {error && <pre style={{ color: 'red' }}>{error}</pre>}
             </div>}
             <style jsx>{`
-                /* Custom scrollbar track */
                 ::-webkit-scrollbar {
                     width: 10px;
                 }
-
-                /* Custom scrollbar thumb */
                 ::-webkit-scrollbar-thumb {
                     background-color: #888;
                     border-radius: 5px;
                 }
-
-                /* Optional: scrollbar track */
                 ::-webkit-scrollbar-track {
                     background-color: #f1f1f1;
                 }
