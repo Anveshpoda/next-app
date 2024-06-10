@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import DashboardStyles from '@/styles/dashboard';
 import Header from '@/components/header';
 import Cgrid from '@/components/UI/muiGrid2'
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 import Atom from '@/components/UI/atom';
 import { createApi } from 'unsplash-js';
 import SearchBar from '@/components/UI/searchBar';
