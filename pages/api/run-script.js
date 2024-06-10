@@ -25,33 +25,28 @@ export default function handler(req, res) {
 
         const scriptPath = path.resolve('/home/anveshpoda/el_beta.sh');
 
-        // Set headers for streaming response
         res.setHeader('Content-Type', 'text/plain; charset=utf-8');
         res.setHeader('Transfer-Encoding', 'chunked');
 
-        // Start the script process
         const scriptProcess = spawn('bash', [scriptPath]);
 
-        // Stream stdout
         scriptProcess.stdout.on('data', (data) => {
             res.write(data);
             if (res.flush) {
-                res.flush(); // Ensure the data is flushed
+                res.flush();
             }
         });
 
-        // Stream stderr
         scriptProcess.stderr.on('data', (data) => {
             res.write(data);
             if (res.flush) {
-                res.flush(); // Ensure the data is flushed
+                res.flush();
             }
         });
 
-        // Handle process exit
+
         scriptProcess.on('close', (code) => {
             if (code === 0) {
-                // Update the last execution time
                 lastExecutionTime = now;
                 res.write('\nScript ran successfully');
             } else {
