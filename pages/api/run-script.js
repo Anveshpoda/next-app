@@ -63,7 +63,7 @@ export default function handler(req, res) {
         scriptProcess.on('error', (error) => {
             disabled = false;
             console.error(`Error executing script: ${error}`);
-            res.status(500).end(JSON.stringify({ success: false, message: error.message }));
+            res.status(500).end(`Failed to run script: ${error.message}`);
         });
 
         res.on('close', () => {
