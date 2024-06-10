@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { useState } from "react";
 
 
@@ -29,9 +30,10 @@ const El_new = () => {
     };
 
     return (
-        <div>
-            <h1 style={{ padding: 10 }}>Run Script Example</h1>
-            <button onClick={runScript}>Run Script</button>
+        <div style={{ margin: 10 }}>
+            <h1>EL Staging Script</h1>
+            {/* <button onClick={runScript}>Run Script</button> */}
+            <Button onClick={runScript} className='m-5' variant="contained" color="primary"> Run Script </Button><br />
             {(output || error) && <div className="tranBg" style={{ maxHeight: 'calc( 100vh - 154px)', overflow: 'scroll', width: '100%' }}>
                 {output && <pre>{output}</pre>}
                 {error && <pre style={{ color: 'red' }}>{error}</pre>}

@@ -16,7 +16,10 @@ body{ margin: 0 ; background: url('https://source.unsplash.com/random/1900x1080/
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 7px;
+    height: 7px;
+    background-color: #dadce0;
+    border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb {
     background-color: #888;
