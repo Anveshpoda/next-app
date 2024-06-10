@@ -10,36 +10,58 @@ export default function El_new() {
     const outputRef = useRef(null);
 
     const runScript = async () => {
-        setOutput(''); setError(''); setLoading(true); setColor('');
+        setOutput('');
+        setError('');
+        setLoading(true);
+        setColor('');
 
-        const response = await fetch('/api/run-script');
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder('utf-8');
-        let success = false;
+        try {
+            const response = await fetch('/api/run-script');
 
-        if (response.status === 429) {
-            const errorData = await response.json();
-            setError(errorData.error); setColor('red'); setLoading(false); return;
-        }
-
-        let done = false;
-        while (!done) {
-            const { value, done: doneReading } = await reader.read();
-            done = doneReading;
-            if (value) {
-                const text = decoder.decode(value, { stream: true });
-                setOutput((prevOutput) => prevOutput + text);
-                if (text.includes('Script ran successfully')) success = true;
+            // Check if the status is not OK before reading the stream
+            if (!response.ok) {
+                if (response.status === 429) {
+                    const errorData = await response.json();
+                    setError(errorData.error);
+                    setColor('red');
+                } else {
+                    setError('An error occurred while running the script');
+                    setColor('red');
+                }
+                setLoading(false);
+                return;
             }
-        }
 
-        if (success) setColor('green');
-        else {
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let success = false;
+
+            let done = false;
+            while (!done) {
+                const { value, done: doneReading } = await reader.read();
+                done = doneReading;
+                if (value) {
+                    const text = decoder.decode(value, { stream: true });
+                    setOutput((prevOutput) => prevOutput + text);
+                    if (text.includes('Script ran successfully')) {
+                        success = true;
+                    }
+                }
+            }
+
+            if (success) {
+                setColor('green');
+            } else {
+                setColor('red');
+                setError('Failed to run script');
+            }
+
+        } catch (err) {
+            setError('An error occurred while running the script');
             setColor('red');
-            setError('Failed to run script');
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     };
 
     useEffect(() => {
@@ -51,7 +73,14 @@ export default function El_new() {
     return (
         <div style={{ margin: 10 }}>
             <h1>EL Staging Script</h1>
-            <Button variant="contained" color="primary" onClick={runScript} disabled={loading} endIcon={loading && <CircularProgress size={24} />} style={{ backgroundColor: color ? color : 'primary', color: 'white' }}>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={runScript}
+                disabled={loading}
+                endIcon={loading && <CircularProgress size={24} />}
+                style={{ backgroundColor: color || 'primary', color: 'white' }}
+            >
                 {loading ? 'Loading...' : 'Run Script'}
             </Button>
             {color === 'green' && (
