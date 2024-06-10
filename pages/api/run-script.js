@@ -12,15 +12,15 @@ const compressionMiddleware = compression();
 
 export default function handler(req, res) {
 
-    if (disabled) return res.status(200).end(`\nScript was already running`);
+    if (disabled) return res.status(200).end(`\nScript is already running`);
     disabled = true;
     compressionMiddleware(req, res, () => {
         const now = Date.now();
-        const fiveMinutes = 5 * 60 * 1000;
+        const fiveMinutes = 3 * 60 * 1000;
 
         if (now - lastExecutionTime < fiveMinutes) {
             disabled = false;
-            return res.status(429).json({ error: 'Script was run less than 5 minutes ago' });
+            return res.status(429).json({ error: 'Script was run less than 3 minutes ago' });
         }
 
         const scriptPath = path.resolve('/home/anveshpoda/el_beta.sh');
@@ -44,22 +44,22 @@ export default function handler(req, res) {
             }
         });
 
-
         scriptProcess.on('close', (code) => {
             if (code === 0) {
                 lastExecutionTime = now;
                 res.write('\nScript ran successfully');
+                res.end(JSON.stringify({ success: true }));
             } else {
                 res.write(`\nScript exited with code ${code}`);
+                res.end(JSON.stringify({ success: false }));
             }
             disabled = false;
-            res.end();
         });
 
         scriptProcess.on('error', (error) => {
             disabled = false;
             console.error(`Error executing script: ${error}`);
-            res.status(500).end(`\nFailed to run script: ${error.message}`);
+            res.status(500).end(JSON.stringify({ success: false, message: error.message }));
         });
 
         // Prevent Node.js from closing the connection early
