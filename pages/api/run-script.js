@@ -2,7 +2,6 @@
 import { spawn } from 'child_process';
 import path from 'path';
 import compression from 'compression';
-import { NextApiRequest, NextApiResponse } from 'next';
 
 let lastExecutionTime = 0; // Store the last execution time in milliseconds
 let disabled = false;
@@ -22,8 +21,8 @@ export default function handler(req, res) {
             const waitTime = Math.ceil((timeLimit - (now - lastExecutionTime)) / 1000 / 60); // Calculate wait time in minutes
             const lastRun = new Date(lastExecutionTime).toLocaleString();
             disabled = false;
-            return res.status(429).json({
-                error: `Script was run less than 3 minutes ago.\n Last run time was: ${lastRun}. \n Please wait at least ${waitTime} more minute(s).`
+            return res.status(429).json({ 
+                error: `Script was run less than 3 minutes ago. Last run time was: ${lastRun}. Please wait at least ${waitTime} more minute(s).` 
             });
         }
 
@@ -54,10 +53,10 @@ export default function handler(req, res) {
 
             if (code === 0) {
                 res.write('\nScript ran successfully');
-                res.end(JSON.stringify({ success: true }));
+                res.end();
             } else {
                 res.write(`\nScript exited with code ${code}`);
-                res.end(JSON.stringify({ success: false }));
+                res.end();
             }
         });
 

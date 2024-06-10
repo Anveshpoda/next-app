@@ -15,6 +15,12 @@ export default function El_new() {
         const response = await fetch('/api/run-script');
         const reader = response.body.getReader();
         const decoder = new TextDecoder('utf-8');
+        let success = false;
+
+        if (response.status === 429) {
+            const errorData = await response.json();
+            setError(errorData.error); setColor('red'); setLoading(false); return;
+        }
 
         let done = false;
         while (!done) {
@@ -23,15 +29,12 @@ export default function El_new() {
             if (value) {
                 const text = decoder.decode(value, { stream: true });
                 setOutput((prevOutput) => prevOutput + text);
+                if (text.includes('Script ran successfully')) success = true;
             }
         }
 
-        const finalText = await reader.read();
-        const finalMessage = JSON.parse(decoder.decode(finalText.value));
-
-        if (finalMessage.success) {
-            setColor('green');
-        } else {
+        if (success) setColor('green');
+        else {
             setColor('red');
             setError('Failed to run script');
         }
