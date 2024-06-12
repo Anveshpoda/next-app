@@ -1,4 +1,7 @@
-body{ margin: 0 ; background: url('https://source.unsplash.com/random/1900x1080/?nature'); background-size: cover;}
+/* body{ margin: 0 ; background: url('https://source.unsplash.com/random/1900x1080/?nature'); background-size: cover;} */
+body{  margin: 0; background: url('https://via.placeholder.com/1900x1080.png?text=Anvesh Annu') no-repeat center center fixed; background-size: cover;}
+body{  margin: 0; background: url('https://picsum.photos/1900/1080?random=1') no-repeat center center fixed; background-size: cover;}
+/* body{  margin: 0; background: url('https://loremflickr.com/1900/1080/nature') no-repeat center center fixed; background-size: cover;} */
 /* #__next{
   background:#322e3a; height: 100vh;
   color: white
