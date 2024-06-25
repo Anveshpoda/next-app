@@ -15,14 +15,14 @@ export default function handler(req, res) {
 
     compressionMiddleware(req, res, () => {
         const now = Date.now();
-        const timeLimit = 3 * 60 * 1000;
+        const timeLimit = 2 * 60 * 1000;
 
         if (now - lastExecutionTime < timeLimit) {
             const waitTime = Math.ceil((timeLimit - (now - lastExecutionTime)) / 1000 / 60); // Calculate wait time in minutes
             const lastRun = new Date(lastExecutionTime).toLocaleString();
             disabled = false;
             return res.status(429).json({ 
-                error: `Script was run less than 3 minutes ago. Last run time was: ${lastRun}. Please wait at least ${waitTime} more minute(s).` 
+                error: `Script was run less than 2 minutes ago. Last run time was: ${lastRun}. Please wait at least ${waitTime} more minute(s).` 
             });
         }
 
