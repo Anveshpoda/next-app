@@ -97,7 +97,7 @@ export default function El_new() {
                 <div
                     ref={outputRef}
                     className="tranBg"
-                    style={{ maxHeight: 'calc(100vh - 154px)', overflow: 'scroll', width: '100%', marginTop: 10 }}
+                    style={{ maxHeight: 'calc(100vh - 154px)', overflow: 'scroll', width: '100%', marginTop: 10, padding:10 }}
                 >
                     {output && <pre>{output}</pre>}
                     {error && <pre style={{ color: 'red' }}>{error}</pre>}
