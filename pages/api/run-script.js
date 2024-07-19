@@ -10,6 +10,7 @@ let disabled = false;
 const compressionMiddleware = compression();
 
 export default function handler(req, res) {
+    const { type, force } = req.query
     if (disabled) return res.status(200).end('\nScript is already running');
     disabled = true;
 
@@ -17,16 +18,16 @@ export default function handler(req, res) {
         const now = Date.now();
         const timeLimit = 2 * 60 * 1000;
 
-        if (now - lastExecutionTime < timeLimit) {
+        if (force != 1 && (now - lastExecutionTime < timeLimit)) {
             const waitTime = Math.ceil((timeLimit - (now - lastExecutionTime)) / 1000 / 60); // Calculate wait time in minutes
             const lastRun = new Date(lastExecutionTime).toLocaleString();
             disabled = false;
-            return res.status(429).json({ 
-                error: `Script was run less than 2 minutes ago. Last run time was: ${lastRun}. Please wait at least ${waitTime} more minute(s).` 
+            return res.status(429).json({
+                error: `Script was run less than 2 minutes ago. Last run time was: ${lastRun}. Please wait at least ${waitTime} more minute(s).`
             });
         }
 
-        const scriptPath = path.resolve('/home/anveshpoda/el_beta.sh');
+        const scriptPath = path.resolve(type == 'hotfix' ? 'el_hotfix.sh' : '/home/anveshpoda/el_beta.sh');
 
         res.setHeader('Content-Type', 'text/plain; charset=utf-8');
         res.setHeader('Transfer-Encoding', 'chunked');

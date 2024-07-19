@@ -4,7 +4,7 @@ import { runCmd } from '@/utils/fun';
 import Select from '@/components/UI/select';
 const path = '/home/anveshpoda/sandbox/El_staging';
 
-const selSx ={
+const selSx = {
     '& .MuiOutlinedInput-notchedOutline': { borderColor: 'purple', border: '2px solid' },
     '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'pink' },
     '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'orange' },
@@ -16,6 +16,8 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [color, setColor] = useState('');
+    const [forceUpdate, setForceUpdate] = useState(false);
+    const [script, setScript] = useState(initialBranchName == 'el-pre-prod' ? 'beta' : 'hotfix');
     const [selectedBranch, setSelectedBranch] = useState(initialBranchName);
     const outputRef = useRef(null);
 
@@ -25,9 +27,11 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
 
     const runScript = async () => {
         setOutput(''); setError(''); setLoading(true); setColor('');
-        
+
+        if (!((selectedBranch == 'el-pre-prod' && script == 'beta') || (selectedBranch == 'el-hotfix' && script == 'hotfix'))) { setError('Check The Branch and Script combination'); return setLoading(false); }
+
         try {
-            const response = await fetch('/api/run-script');
+            const response = await fetch('/api/run-script?type=' + script);
 
             // Check if the status is not OK before reading the stream
             if (!response.ok) {
@@ -94,18 +98,23 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
                 <h1 style={{ display: 'inline-flex' }}>EL Staging Script</h1>
 
                 <div style={{ display: 'inline-flex', float: 'right' }}>
-                    <Select value={selectedBranch} onChange={handleBranchChange} list={branchList} sx={selSx}/>
+                    <Select value={selectedBranch} onChange={handleBranchChange} list={branchList} sx={selSx} />
                 </div>
             </div>
             {selectedBranch && <><div>Current Branch: <b>{selectedBranch}</b></div><br /></>}
 
-            <Select value={selectedBranch} onChange={handleBranchChange} list={branchList} sx={{...selSx}} style={{height:40, display:'inline-flex'}}/>
+            <Select value={script} onChange={v => setScript(v)} list={['beta', 'hotfix']} sx={{ ...selSx }} style={{ height: 40, margin: '0 10px', display: 'inline-flex' }} />
             <Button variant="contained" color="primary" onClick={runScript} disabled={loading} endIcon={loading && <CircularProgress size={24} />} style={{ backgroundColor: color || 'primary', color: 'white' }}>
                 {loading ? 'Loading...' : 'Run Script'}
             </Button>
             {color === 'green' && (
                 <Button variant="contained" color="secondary" style={{ marginLeft: 20 }} onClick={() => { window.location.href = "http://192.168.131.150:8980/job/git_update_edit-list_staging/"; }}>
                     Run Pipeline
+                </Button>
+            )}
+            {!forceUpdate && (
+                <Button variant="contained" style={{ color: "#b02727",  marginLeft: 20 }} onClick={runScript}>
+                    Force Update
                 </Button>
             )}
             {(output || error) && (
