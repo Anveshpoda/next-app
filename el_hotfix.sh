@@ -58,5 +58,27 @@ git status
 git push origin el-hotfix || { echo "Failed to push changes to origin el-pre-prod"; exit 1; }
 
 
+echo "_________________________ PUSHING TO PRE-PROD ______________________________"
+
+git checkout origin pre-prod
+
+git pull --no-edit origin pre-prod
+
+if ! git pull --ff-only origin el-hotfix; then
+  echo "Fast-forward update failed. Performing a merge."
+
+  git merge origin/el-hotfix -m "JIRA-$jiraId : Merge el-hotfix into current branch"
+  
+  if [[ "$?" != 0 ]]; then
+    echo "Merge conflict detected. Please resolve conflicts and commit manually."
+    exit 0
+  fi
+fi
+
+git checkout origin el-hotfix
+
+echo "SUCCESS"
+
+
 exit
 
