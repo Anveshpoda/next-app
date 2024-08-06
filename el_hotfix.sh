@@ -41,7 +41,7 @@ echo "______________________________________________________________"
 
   cd edit_list
 
-  npm run build --color=always | tail -n 80
+  # npm run build --color=always | tail -n 80
 
   cd ..
 
@@ -71,13 +71,11 @@ if ! git pull --ff-only origin el-hotfix; then
   
   if [[ "$?" != 0 ]]; then
     echo "Merge conflict detected. Please resolve conflicts and commit manually."
-    exit 0
+    exit 1
   fi
 fi
 
 git checkout origin el-hotfix
-
-echo "SUCCESS"
 
 
 exit
