@@ -66,8 +66,8 @@ git branch
 
 git pull --no-edit origin pre-prod
 
-if ! git pull --ff-only origin el-hotfix; then
-  echo "Fast-forward update failed. Performing a merge."
+# if ! git pull --ff-only origin el-hotfix; then
+#   echo "Fast-forward update failed. Performing a merge."
 
   git merge origin/el-hotfix -m "JIRA-$jiraId : Merge el-hotfix into current branch"
   
@@ -75,7 +75,7 @@ if ! git pull --ff-only origin el-hotfix; then
     echo "Merge conflict detected. Please resolve conflicts and commit manually."
     exit 1
   fi
-fi
+# fi
 
 git checkout el-hotfix
 
