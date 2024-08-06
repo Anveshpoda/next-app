@@ -62,6 +62,8 @@ echo "_________________________ PUSHING TO PRE-PROD ____________________________
 
 git checkout origin pre-prod
 
+git branch
+
 git pull --no-edit origin pre-prod
 
 if ! git pull --ff-only origin el-hotfix; then
