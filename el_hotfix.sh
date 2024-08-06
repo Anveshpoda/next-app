@@ -41,7 +41,7 @@ echo "______________________________________________________________"
 
   cd edit_list
 
-  # npm run build --color=always | tail -n 80
+  npm run build --color=always | tail -n 80
 
   cd ..
 
@@ -66,8 +66,8 @@ git branch
 
 git pull --no-edit origin pre-prod
 
-# if ! git pull --ff-only origin el-hotfix; then
-#   echo "Fast-forward update failed. Performing a merge."
+if ! git pull --ff-only origin el-hotfix; then
+  echo "Fast-forward update failed. Performing a merge."
 
   git merge origin/el-hotfix -m "JIRA-$jiraId : Merge el-hotfix into current branch"
   
@@ -75,7 +75,7 @@ git pull --no-edit origin pre-prod
     echo "Merge conflict detected. Please resolve conflicts and commit manually."
     exit 1
   fi
-# fi
+fi
 
 git checkout el-hotfix
 
