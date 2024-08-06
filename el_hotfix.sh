@@ -60,7 +60,7 @@ git push origin el-hotfix || { echo "Failed to push changes to origin el-pre-pro
 
 echo "_________________________ PUSHING TO PRE-PROD ______________________________"
 
-git checkout origin pre-prod
+git checkout pre-prod
 
 git branch
 
@@ -77,7 +77,7 @@ if ! git pull --ff-only origin el-hotfix; then
   fi
 fi
 
-git checkout origin el-hotfix
+git checkout el-hotfix
 
 
 exit
