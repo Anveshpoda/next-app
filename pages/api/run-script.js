@@ -2,6 +2,7 @@
 import { spawn } from 'child_process';
 import path from 'path';
 import compression from 'compression';
+import { createMr, slackLog } from '@/utils/fun';
 
 let lastExecutionTime = 0; // Store the last execution time in milliseconds
 let disabled = false;
@@ -54,7 +55,8 @@ export default function handler(req, res) {
 
             if (code === 0) {
                 res.write('\nScript ran successfully');
-                res.end();
+                if(type == 'hotfix') takeLive(res)
+                else res.end();
             } else {
                 res.write(`\nScript exited with code ${code}`);
                 res.end();
@@ -71,4 +73,16 @@ export default function handler(req, res) {
             scriptProcess.kill();
         });
     });
+}
+
+const takeLive = async (res) => {
+    let dt = await createMr("next_monorepo","hotFix","dev","Test")
+    if(dt.code == 0 || dt.data.message) return res.status(500).json(dt)
+  
+    slackLog(dt.data.web_url)
+    slackLog(dt.data.web_url, "anvesh")
+
+    res.write(`\n${dt.data.web_url}`);
+    res.write(`\n${dt}`);
+    res.end();
 }
