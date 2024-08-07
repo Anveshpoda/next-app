@@ -77,6 +77,10 @@ if ! git pull --ff-only origin el-hotfix; then
   fi
 fi
 
+git status
+
+git push origin pre-prod || { echo "Failed to push changes to origin el-pre-prod"; exit 1; }
+
 git checkout el-hotfix
 
 
