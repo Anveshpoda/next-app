@@ -83,6 +83,6 @@ const takeLive = async (res) => {
     slackLog(dt.data.web_url, "anvesh")
 
     res.write(`\n${dt.data.web_url}`);
-    res.write(`\n${dt}`);
+    res.write(`\n${JSON.stringify(dt)}`);
     res.end();
 }
