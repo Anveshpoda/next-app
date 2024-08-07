@@ -55,8 +55,9 @@ export default function handler(req, res) {
 
             if (code === 0) {
                 res.write('\nScript ran successfully');
-                if(type == 'hotfix') takeLive(res)
-                else res.end();
+                // if(type == 'hotfix') takeLive(res)
+                // else 
+                res.end();
             } else {
                 res.write(`\nScript exited with code ${code}`);
                 res.end();
