@@ -10,7 +10,7 @@ git pull --no-edit origin Anvesh_EL
 
 git status
 
-git push origin el-pre-prod || { echo "Failed to push changes to origin el-pre-prod"; exit 1; }
+# git push origin el-pre-prod || { echo "Failed to push changes to origin el-pre-prod"; exit 1; }
 
 pm2 reload el-old
 
