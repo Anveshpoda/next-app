@@ -18,7 +18,7 @@ export default function handler(req, res) {
         const now = Date.now();
         const timeLimit = 2 * 60 * 1000;
 
-        if (force != 1 && (now - lastExecutionTime < timeLimit)) {
+        if (type != 'dev' && force != 1 && (now - lastExecutionTime < timeLimit)) {
             const waitTime = Math.ceil((timeLimit - (now - lastExecutionTime)) / 1000 / 60); // Calculate wait time in minutes
             const lastRun = new Date(lastExecutionTime).toLocaleString();
             disabled = false;
@@ -27,7 +27,7 @@ export default function handler(req, res) {
             });
         }
 
-        const scriptPath = path.resolve(type == 'hotfix' ? 'el_hotfix.sh' : '/home/anveshpoda/el_beta.sh');
+        const scriptPath = path.resolve(type == 'dev' ? 'el_dev.sh' : type == 'hotfix' ? 'el_hotfix.sh' : '/home/anveshpoda/el_beta.sh');
 
         res.setHeader('Content-Type', 'text/plain; charset=utf-8');
         res.setHeader('Transfer-Encoding', 'chunked');

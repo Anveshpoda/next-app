@@ -29,7 +29,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
         console.log('force >> ', force)
         setOutput(''); setError(''); setLoading(true); setColor(''); setForceUpdate(false);
 
-        if (!((selectedBranch == 'el-pre-prod' && script == 'beta') || (selectedBranch == 'el-hotfix' && script == 'hotfix'))) { setError('Check The Branch and Script combination'); return setLoading(false); }
+        if ((script != 'dev') && !((selectedBranch == 'el-pre-prod' && script == 'beta') || (selectedBranch == 'el-hotfix' && script == 'hotfix'))) { setError('Check The Branch and Script combination'); return setLoading(false); }
 
         try {
             const response = await fetch('/api/run-script?type=' + script + '&force=' + force);
@@ -105,7 +105,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
             </div>
             {selectedBranch && <><div>Current Branch: <b>{selectedBranch}</b></div><br /></>}
 
-            <Select value={script} onChange={v => setScript(v)} list={['beta', 'hotfix']} sx={{ ...selSx }} style={{ height: 40, margin: '0 10px', display: 'inline-flex' }} />
+            <Select value={script} onChange={v => setScript(v)} list={['beta', 'hotfix', 'dev']} sx={{ ...selSx }} style={{ height: 40, margin: '0 10px', display: 'inline-flex' }} />
             <Button variant="contained" color="primary" onClick={() => runScript(0)} disabled={loading} endIcon={loading && <CircularProgress size={24} />} style={{ backgroundColor: color || 'primary', color: 'white' }}>
                 {loading ? 'Loading...' : 'Run Script'}
             </Button>

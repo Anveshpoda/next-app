@@ -85,7 +85,7 @@ echo "______________________________________________________________"
 
 git status
 
-# git push origin el-pre-prod || { echo "Failed to push changes to origin el-pre-prod"; exit 1; }
+git push origin el-pre-prod || { echo "Failed to push changes to origin el-pre-prod"; exit 1; }
 
 
 exit
