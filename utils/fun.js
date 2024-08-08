@@ -38,6 +38,10 @@ export const slackLog = async (debug, user) => {
 
 export const createMr = async (repo, source, target, title, desc) => {
     if (!repo || !source || !target || !title) return ({ code: 0, err: "Invalid Data To Create MR" })
+
+    let Jid  = getJiraId(title, branch, '/home/anveshpoda/sandbox/El_staging')
+    if(!Jid) return ({ code: 0, msg: "Error", err: "Jira Id Not Found" })
+
     let dt = {
         "id": "root%2F" + repo,
         "source_branch": source,
@@ -57,5 +61,21 @@ export const createMr = async (repo, source, target, title, desc) => {
         })
         let res = await gitApi.json()
         return ({ code: 1, msg: "Success", data: res })
-    } catch (e) { console.log('Error  >> ', e); }
+    } catch (e) { console.log('Error  >> ', e); return ({ code: 0, msg: "Error", err: e }) }
 }
+
+const isValidJiraId = (id) => /^JIRA-[A-Za-z0-9]{1,8}-\d{1,10}$/.test(id);
+
+export const getJiraId = async (title, branch, path) => {
+    const titleMatch = title.match(/JIRA-[A-Za-z0-9]{1,8}-\d{1,10}/);
+    if (titleMatch && isValidJiraId(titleMatch[0])) return title;
+
+    try {
+        if (!branch || typeof branch !== 'string') throw new Error('Invalid branch name');
+        const commitMessage = await runCmd(`git show -s --format=%B $(git rev-parse origin/${branch})`, path);
+        const match = commitMessage.match(/JIRA-[A-Za-z0-9]{1,8}-\d{1,10}/);
+        return match ? `JIRA-${match[0]} ${title || ''}` : null;
+
+    } catch (error) { console.error('Error fetching JIRA ID from commit:', error); return null;  }
+
+};
