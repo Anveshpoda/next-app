@@ -39,15 +39,17 @@ export const slackLog = async (debug, user) => {
 export const createMr = async (repo, source, target, title, desc) => {
     if (!repo || !source || !target || !title) return ({ code: 0, err: "Invalid Data To Create MR" })
 
-    let Jid  = getJiraId(title, branch, '/home/anveshpoda/sandbox/El_staging')
-    if(!Jid) return ({ code: 0, msg: "Error", err: "Jira Id Not Found" })
+    let Jid = getJiraId(title, source, desc || '/home/anveshpoda/sandbox/El_staging')
+    if (!Jid) return ({ code: 0, msg: "Error", err: "Jira Id Not Found" })
 
     let dt = {
         "id": "root%2F" + repo,
         "source_branch": source,
         "target_branch": target,
         "title": title,
-        "description": desc
+        "description": desc,
+        "reviewer_ids": [424],
+        "assignee_id": 424
     }
 
     try {
@@ -60,6 +62,7 @@ export const createMr = async (repo, source, target, title, desc) => {
             body: JSON.stringify(dt),
         })
         let res = await gitApi.json()
+        if (!gitApi.ok) return ({ code: 0, msg: "Error creating merge request ", data: res })
         return ({ code: 1, msg: "Success", data: res })
     } catch (e) { console.log('Error  >> ', e); return ({ code: 0, msg: "Error", err: e }) }
 }
@@ -76,6 +79,6 @@ export const getJiraId = async (title, branch, path) => {
         const match = commitMessage.match(/JIRA-[A-Za-z0-9]{1,8}-\d{1,10}/);
         return match ? `JIRA-${match[0]} ${title || ''}` : null;
 
-    } catch (error) { console.error('Error fetching JIRA ID from commit:', error); return null;  }
+    } catch (error) { console.error('Error fetching JIRA ID from commit:', error); return null; }
 
 };
