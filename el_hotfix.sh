@@ -65,7 +65,27 @@ rsync -ah -J --exclude='node_modules' --exclude='package.json' --exclude='src' .
 
 echo "Copied Successfully"
 
-echo "_________________________ PUSHING TO PRE-PROD ______________________________"
+
+echo "_________________________ GETTING UNIQUE JIRA IDs WITH URLS FROM el-hotfix ______________________________"
+
+commit_messages=$(git log origin/pre-prod..origin/el-hotfix --pretty=format:"%B")
+
+extract_unique_jira_ids() {
+  echo "$1" | grep -oP '(?<=JIRA-)[A-Z0-9-]+' | sort | uniq
+}
+
+unique_jira_ids=$(extract_unique_jira_ids "$commit_messages")
+
+if [ -z "$unique_jira_ids" ]; then
+  echo "No unique JIRA IDs found in the commits to be merged."
+else
+  echo "Unique JIRA IDs to be merged:"
+  while IFS= read -r id; do
+    echo "https://jdjira.justdial.com/browse/$id"
+  done <<< "$unique_jira_ids"
+fi
+
+echo "____________________________ PUSHING TO PRE-PROD ________________________________"
 
 git checkout pre-prod
 
