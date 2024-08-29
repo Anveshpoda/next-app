@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import { runCmd } from '@/utils/fun';
 import Select from '@/components/UI/select';
+import Hotfix from './hotfix';
 const path = '/home/anveshpoda/sandbox/El_staging';
 
 const selSx = {
@@ -13,6 +14,7 @@ const selSx = {
 
 const El_new = ({ branchName: initialBranchName, branchList }) => {
     const [output, setOutput] = useState('');
+    const [extraOpt, setExtraOpt] = useState({});
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [color, setColor] = useState('');
@@ -24,6 +26,17 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
     useEffect(() => {
         console.log('props test >> ', { branchName: initialBranchName, branchList });
     }, [initialBranchName, branchList]);
+
+    const takeLive = async (res) => {
+        let dt = await createMr("mpa_app", "development", "pre-prod", "JIRA-ELWM-6955")
+        if (dt.code == 0 || dt.data.message) return res.status(500).json(dt)
+      
+        // slackLog(dt.data.web_url)
+        slackLog(dt.data.web_url, "anvesh")
+      
+        res.write(`\n${JSON.stringify(dt)}`);
+        res.end();
+      }
 
     const runScript = async (force = 0) => {
         console.log('force >> ', force)
@@ -105,7 +118,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
             </div>
             {selectedBranch && <><div>Current Branch: <b>{selectedBranch}</b></div><br /></>}
 
-            <Select value={script} onChange={v => setScript(v)} list={['beta', 'hotfix', 'dev']} sx={{ ...selSx }} style={{ height: 40, margin: '0 10px', display: 'inline-flex' }} />
+            <Select value={script} onChange={v => { setExtraOpt({}); setScript(v) }} list={['beta', 'hotfix', 'dev']} sx={{ ...selSx }} style={{ height: 40, margin: '0 10px', display: 'inline-flex' }} />
             <Button variant="contained" color="primary" onClick={() => runScript(0)} disabled={loading} endIcon={loading && <CircularProgress size={24} />} style={{ backgroundColor: color || 'primary', color: 'white' }}>
                 {loading ? 'Loading...' : 'Run Script'}
             </Button>
@@ -119,6 +132,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
                     Force Update
                 </Button>
             )}
+            {script == "hotfix" && <Hotfix extraOpt={extraOpt} setExtraOpt={setExtraOpt}/>}
             {(output || error) && (
                 <div ref={outputRef} className="tranBg" style={{ maxHeight: 'calc(100vh - 180px)', overflow: 'scroll', marginTop: 10, padding: 10 }}>
                     {output && <pre>{output}</pre>}

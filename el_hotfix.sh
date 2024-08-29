@@ -65,7 +65,6 @@ rsync -ah -J --exclude='node_modules' --exclude='package.json' --exclude='src' .
 
 echo "Copied Successfully"
 
-
 echo "_________________________ GETTING UNIQUE JIRA IDs WITH URLS FROM el-hotfix ______________________________"
 
 commit_messages=$(git log origin/master..origin/el-hotfix --pretty=format:"%B")
