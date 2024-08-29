@@ -68,7 +68,7 @@ echo "Copied Successfully"
 
 echo "_________________________ GETTING UNIQUE JIRA IDs WITH URLS FROM el-hotfix ______________________________"
 
-commit_messages=$(git log origin/pre-prod..origin/el-hotfix --pretty=format:"%B")
+commit_messages=$(git log origin/master..origin/el-hotfix --pretty=format:"%B")
 
 extract_unique_jira_ids() {
   echo "$1" | grep -oP '(?<=JIRA-)[A-Z0-9-]+' | sort | uniq
