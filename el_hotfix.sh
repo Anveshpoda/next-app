@@ -60,8 +60,8 @@ git push origin el-hotfix || { echo "Failed to push changes to origin el-pre-pro
 
 echo "_________________________ COPY LIVE BUILD TO project01.anveshpoda.blrsoftware.jd ______________________________"
 
-rsync -ah -J --exclude='node_modules' --exclude='package.json' ./edit_list/ ../project01/MSITE/edit_list
-rsync -ah -J --exclude='node_modules' --exclude='package.json' ./edit_list/ ../project01/edit_list
+rsync -ah -J --exclude='node_modules' --exclude='package.json' --exclude='src' --exclude='public' ./edit_list/ ../project01/MSITE/edit_list
+rsync -ah -J --exclude='node_modules' --exclude='package.json' --exclude='src' ./edit_list/ ../project01/edit_list
 
 echo "Copied Successfully"
 
