@@ -20,3 +20,12 @@ const takeLive = async (res) => {
   res.write(`\n${JSON.stringify(dt)}`);
   res.end();
 }
+
+// Function to retrieve a specific log file based on timestamp
+export const getLogByTimestamp = (timestamp) => {
+  const logFileName = `${LOG_DIR}log-${timestamp}.txt`;
+  if (!fs.existsSync(logFileName)) {
+      throw new Error(`Log file not found for timestamp: ${timestamp}`);
+  }
+  return fs.readFileSync(logFileName, 'utf-8');
+};

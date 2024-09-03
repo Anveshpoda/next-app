@@ -1,9 +1,10 @@
-// pages/api/run-script.js
 import { spawn } from 'child_process';
 import path from 'path';
+import fs from 'fs';
 import compression from 'compression';
 import { createMr, slackLog } from '@/utils/fun';
 
+const LOG_DIR = '../../logs/'; // Directory to store logs
 let lastExecutionTime = 0; // Store the last execution time in milliseconds
 let disabled = false;
 
@@ -28,15 +29,20 @@ export default function handler(req, res) {
             });
         }
 
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-'); // Generate timestamp for file naming
+        const logFileName = `${LOG_DIR}/${type}/log-${timestamp}.txt`;
         const scriptPath = path.resolve(type == 'dev' ? 'el_dev.sh' : type == 'hotfix' ? 'el_hotfix.sh' : '/home/anveshpoda/el_beta.sh');
-
-        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-        res.setHeader('Transfer-Encoding', 'chunked');
+        
+        // res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        // res.setHeader('Transfer-Encoding', 'chunked');
 
         const scriptProcess = spawn('bash', [scriptPath]);
 
+        let logData = '';
+
         scriptProcess.stdout.on('data', (data) => {
             res.write(data);
+            logData += data;
             if (res.flush) {
                 res.flush();
             }
@@ -44,6 +50,7 @@ export default function handler(req, res) {
 
         scriptProcess.stderr.on('data', (data) => {
             res.write(data);
+            logData += data;
             if (res.flush) {
                 res.flush();
             }
@@ -53,10 +60,11 @@ export default function handler(req, res) {
             disabled = false;
             lastExecutionTime = now;
 
+            // Save the output to a new log file
+            fs.writeFileSync(logFileName, logData + `\nScript exited with code ${code}`);
+
             if (code === 0) {
                 res.write('\nScript ran successfully');
-                // if(type == 'hotfix') takeLive(res)
-                // else 
                 res.end();
             } else {
                 res.write(`\nScript exited with code ${code}`);
