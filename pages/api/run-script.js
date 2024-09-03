@@ -4,7 +4,7 @@ import fs from 'fs';
 import compression from 'compression';
 import { createMr, slackLog } from '@/utils/fun';
 
-const LOG_DIR = '../../logs/'; // Directory to store logs
+const LOG_DIR = 'logs/'; // Directory to store logs
 let lastExecutionTime = 0; // Store the last execution time in milliseconds
 let disabled = false;
 
