@@ -30,7 +30,7 @@ export default function handler(req, res) {
         }
 
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-'); // Generate timestamp for file naming
-        const logFileName = `${LOG_DIR}/${type}/log-${timestamp}.txt`;
+        const logFileName = `${LOG_DIR}${type}/log-${timestamp}.txt`;
         const scriptPath = path.resolve(type == 'dev' ? 'el_dev.sh' : type == 'hotfix' ? 'el_hotfix.sh' : '/home/anveshpoda/el_beta.sh');
         
         // res.setHeader('Content-Type', 'text/plain; charset=utf-8');
