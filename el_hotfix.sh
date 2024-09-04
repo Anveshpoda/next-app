@@ -68,7 +68,7 @@ echo " "
 rsync -ah -J --exclude='node_modules' --exclude='package.json' --exclude='src' --exclude='public' ./edit_list/ ../project01/MSITE/edit_list
 rsync -ah -J --exclude='node_modules' --exclude='package.json' --exclude='src' ./edit_list/ ../project01/edit_list
 
-echo " Build Copied Successfully. Check your changes in this PORT"
+echo " Build Copied Successfully. Check your changes in below PORT"
 echo " http://project01.anveshpoda.blrsoftware.jd/MSITE/edit_list/index.php"
 
 echo " "
