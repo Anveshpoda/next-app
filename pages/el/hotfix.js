@@ -6,14 +6,19 @@ import { runCmd } from '@/utils/fun';
 const Hotfix = ({ output, error, outputRef, ...props }) => {
   const [logData, setLogData] = useState('')
   const [logList, setLogList] = useState([])
-  useEffect(() => {
-    getLogList()
-  }, [])
+  
+  useEffect(() => { getLogList() }, [])
+
+  const sortedFd = fd.sort((a, b) => {
+    const dateA = moment(a, 'log_HH-mm__DD-MM-YYYY.txt');
+    const dateB = moment(b, 'log_HH-mm__DD-MM-YYYY.txt');
+    return dateB - dateA;
+  });
 
   const getLogList = async () => {
     let files = await runCmd('ls', 'logs/hotfix');
-    console.log('files >> ',files)
-    setLogList(files.fd || []);
+    console.log('files >> ', files)
+    setLogList(sortedFd(files.fd) || []);
   }
 
 
