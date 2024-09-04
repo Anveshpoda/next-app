@@ -24,6 +24,7 @@ else
   echo "Extracted JIRA ID: JIRA-$jiraId"
 fi
 
+echo " "
 echo "______________________________________________________________"
 
 # changes_detected=false
@@ -58,6 +59,7 @@ git status
 
 git push origin el-hotfix || { echo "Failed to push changes to origin el-pre-prod"; exit 1; }
 
+echo " "
 echo "_________________________ COPY LIVE BUILD TO project01.anveshpoda.blrsoftware.jd ______________________________"
 
 rsync -ah -J --exclude='node_modules' --exclude='package.json' --exclude='src' --exclude='public' ./edit_list/ ../project01/MSITE/edit_list
@@ -65,8 +67,8 @@ rsync -ah -J --exclude='node_modules' --exclude='package.json' --exclude='src' .
 
 echo " Build Copied Successfully. Check your changes in this PORT"
 echo " http://project01.anveshpoda.blrsoftware.jd/MSITE/edit_list/index.php"
-echo " "
 
+echo " "
 echo "_________________________ GETTING UNIQUE JIRA IDs WITH URLS FROM el-hotfix ______________________________"
 
 commit_messages=$(git log origin/master..origin/el-hotfix --pretty=format:"%B")
@@ -86,6 +88,7 @@ else
   done <<< "$unique_jira_ids"
 fi
 
+echo " "
 echo "____________________________ PUSHING TO PRE-PROD ________________________________"
 
 git checkout pre-prod
