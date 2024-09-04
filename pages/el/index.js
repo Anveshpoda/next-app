@@ -110,7 +110,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
     return (
         <div style={{ margin: 10 }}>
             <div>
-                <h1 style={{ display: 'inline-flex' }}>EL Staging Script</h1>
+                <h1 style={{ display: 'inline-flex', margin:'10px 0' }}>EL Staging Script</h1>
 
                 <div style={{ display: 'inline-flex', float: 'right' }}>
                     <Select value={selectedBranch} onChange={handleBranchChange} list={branchList} sx={selSx} />
@@ -132,9 +132,9 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
                     Force Update
                 </Button>
             )}
-            {script == "hotfix" && <Hotfix extraOpt={extraOpt} setExtraOpt={setExtraOpt}/>}
-            {(output || error) && (
-                <div ref={outputRef} className="tranBg" style={{ maxHeight: 'calc(100vh - 180px)', overflow: 'scroll', marginTop: 10, padding: 10 }}>
+            {script == "hotfix" && <Hotfix outputRef={outputRef} output={output} error={error} extraOpt={extraOpt} setExtraOpt={setExtraOpt}/>}
+            {script != "hotfix" && (output || error) && (
+                <div ref={outputRef} className="tranBg" style={{ maxHeight: 'calc(100vh - 207px)', overflow: 'scroll', marginTop: 10, padding: 10 }}>
                     {output && <pre>{output}</pre>}
                     {error && <pre style={{ color: 'red' }}>{error}</pre>}
                 </div>

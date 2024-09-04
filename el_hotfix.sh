@@ -41,8 +41,8 @@ echo "______________________________________________________________"
 
   cd edit_list
 
-  # npm run build --color=always | tail -n 80 || { echo "Build Failed"; exit 1; }
-  npm run build || { echo "Build Failed"; exit 1; }
+  npm run build --color=always | tail -n 100 || { echo "Build Failed"; exit 1; }
+  # npm run build || { echo "Build Failed"; exit 1; }
 
   cd ..
 
