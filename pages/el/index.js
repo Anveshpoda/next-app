@@ -134,7 +134,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
             )}
             {script == "hotfix" && <Hotfix outputRef={outputRef} output={output} error={error} extraOpt={extraOpt} setExtraOpt={setExtraOpt}/>}
             {script != "hotfix" && (output || error) && (
-                <div ref={outputRef} className="tranBg" style={{ maxHeight: 'calc(100vh - 207px)', overflow: 'scroll', marginTop: 10, padding: 10 }}>
+                <div ref={outputRef} className="tranBg" style={{ maxHeight: 'calc(100vh - 184px)', overflow: 'scroll', marginTop: 10, padding: 10 }}>
                     {output && <pre>{output}</pre>}
                     {error && <pre style={{ color: 'red' }}>{error}</pre>}
                 </div>
