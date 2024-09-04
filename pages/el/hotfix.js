@@ -12,6 +12,7 @@ const Hotfix = ({ output, error, outputRef, ...props }) => {
 
   const getLogList = async () => {
     let files = await runCmd('ls', 'logs/hotfix');
+    console.log('files >> ',files)
     setLogList(files.fd || []);
   }
 
