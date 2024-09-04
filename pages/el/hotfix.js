@@ -44,12 +44,12 @@ const Hotfix = ({ output, error, outputRef, ...props }) => {
         </AccordionDetails>
       </Accordion>
       <div style={{ display: 'flex', width: '100%' }} >
-        <div style={{ width: '165px', margin: '10px 10px 0 0 ' }}>
+        <div style={{ width: '170px', margin: '10px 10px 0 0 ' }}>
           <div style={{ padding: '10px 0 0', fontWeight: 'bold' }}>LOG FILES</div>
           {logList.map((l, i) => <div className="tranBg" style={{ marginTop: 10, padding: 5, cursor: 'pointer' }} key={i} onClick={() => fetchLogContent(l)}>{l.replace('.txt', '').replace('log_', '')}</div>)}
         </div>
         {(output || error || logData) && (
-          <div ref={outputRef} className="tranBg" style={{ maxHeight: 'calc(100vh - 242px)', width: '100%', overflow: 'scroll', marginTop: 10, padding: 10 }}>
+          <div ref={outputRef} className="tranBg" style={{ maxHeight: 'calc(100vh - 242px)', width: '100%', overflow: 'scroll', marginTop: 10, padding: 10, borderRadius: 10 }}>
             {output && <pre>{output}</pre>}
             <pre style={{ whiteSpace: 'pre-wrap' }}>{logData}</pre>
             {error && <pre style={{ color: 'red' }}>{error}</pre>}
