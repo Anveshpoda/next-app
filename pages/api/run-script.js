@@ -34,6 +34,7 @@ export default function handler(req, res) {
         // const logFileName = `${LOG_DIR}${type}/log-${timestamp}.txt`;
         // const logFileName = `log_${new Date().toLocaleString('en-GB', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/[/,]/g, '-').replace(' ', '__').replace(':', '-')}.txt`;
         const logFileName = `log_${moment().format('HH-mm__DD-MM-YYYY')}.txt`;
+        console.log('logFileName >> ',logFileName)
         const scriptPath = path.resolve(type == 'dev' ? 'el_dev.sh' : type == 'hotfix' ? 'el_hotfix.sh' : '/home/anveshpoda/el_beta.sh');
         
         // res.setHeader('Content-Type', 'text/plain; charset=utf-8');
