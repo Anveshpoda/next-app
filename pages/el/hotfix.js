@@ -11,9 +11,10 @@ const Hotfix = ({ output, error, outputRef, ...props }) => {
   useEffect(() => { getLogList() }, [])
 
   const sortedFd = (fd) => fd.sort((a, b) => {
-    const dateA = moment(a, 'log_HH-mm__DD-MM-YYYY.txt');
-    const dateB = moment(b, 'log_HH-mm__DD-MM-YYYY.txt');
-    return dateB - dateA;
+    const format = '[log_]HH-mm__DD-MM-YYYY[.txt]';
+    const dateA = moment(a, format);
+    const dateB = moment(b, format);
+    return dateB.diff(dateA);
   });
 
   const getLogList = async () => {
@@ -32,7 +33,7 @@ const Hotfix = ({ output, error, outputRef, ...props }) => {
 
 
 
-
+  
   return (
 
     <div>

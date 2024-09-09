@@ -3,7 +3,7 @@ import { createMr, slackLog } from "@/utils/fun"
 export default async function handler(req, res) {
 
 
-  if (req.query.live = 1) { await takeLive(res) }
+  if (req.query.live == 1) { await takeLive(res) }
 
 
   res.status(200).json({ name: 'John Doe' })
