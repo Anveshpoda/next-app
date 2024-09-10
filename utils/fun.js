@@ -46,24 +46,26 @@ export const createMr = async (repo, source, target, title, desc, path) => {
         "id": "root%2F" + repo,
         "source_branch": source,
         "target_branch": target,
-        "title": title,
+        "title": Jid,
         "description": desc.replace(/\n/g, '<br>'),
         "reviewer_ids": [424],
         "assignee_id": 424
     }
 
+    console.log('createMr dt >> ',dt)
+
     try {
-        let gitApi = await fetch(`http://192.168.12.250:900/api/v4/projects/root%2F${repo}/merge_requests`, {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                'Private-Token': 'glpat-3HTzB_U5qXvHthA5ACqr'
-            },
-            body: JSON.stringify(dt),
-        })
-        let res = await gitApi.json()
-        if (!gitApi.ok) return ({ code: 0, msg: "Error creating merge request ", data: res })
-        return ({ code: 1, msg: "Success", data: res })
+        // let gitApi = await fetch(`http://192.168.12.250:900/api/v4/projects/root%2F${repo}/merge_requests`, {
+        //     method: 'post',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Private-Token': 'glpat-3HTzB_U5qXvHthA5ACqr'
+        //     },
+        //     body: JSON.stringify(dt),
+        // })
+        // let res = await gitApi.json()
+        // if (!gitApi.ok) return ({ code: 0, msg: "Error creating merge request ", data: res })
+        return ({ code: 1, msg: "Success", data: res || '' })
     } catch (e) { console.log('Error  >> ', e); return ({ code: 0, msg: "Error", err: e }) }
 }
 
