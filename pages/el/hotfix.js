@@ -60,7 +60,7 @@ const Hotfix = ({ output, error, outputRef, prOut, ...props }) => {
         {(output || error || logData) && (
           <div ref={outputRef} className="tranBg hfix" style={{ width: '100%', marginTop: 10, padding: 10, borderRadius: 10 }}>
             {output && <pre>{output}</pre>}
-            {prOut && <pre>{JSON.stringify(prOut)}</pre>}
+            {prOut && <pre>{JSON.stringify(data, null, 2)}</pre>}
             <pre style={{ whiteSpace: 'pre-wrap' }}>{logData}</pre>
             {error && <pre style={{ color: 'red' }}>{error}</pre>}
           </div>
