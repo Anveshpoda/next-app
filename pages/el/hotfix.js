@@ -54,7 +54,7 @@ const Hotfix = ({ output, error, outputRef, prOut, ...props }) => {
         </AccordionDetails>
       </Accordion>
       <div style={{ display: 'flex', width: '100%' }} >
-        <div className='hfix' style={{ width: '170px', margin: '10px 10px 0 0 ' }}>
+        <div className='hfix' style={{ width: '170px', margin: '10px 10px 0 0 ', paddingRight: 9 }}>
           <div style={{ padding: '10px 0 0', fontWeight: 'bold' }}>LOG FILES</div>
           {logList.map((l, i) => <div className="tranBg" style={{ marginTop: 10, padding: 5, cursor: 'pointer' }} key={i} onClick={() => fetchLogContent(l)}>{l.replace('.txt', '').replace('log_', '')}</div>)}
         </div>
@@ -69,7 +69,7 @@ const Hotfix = ({ output, error, outputRef, prOut, ...props }) => {
 
       </div>
       <style jsx>{`
-        .hfix{ max-height: calc(-242px + 100vh); overflow: scroll; }
+        .hfix{ max-height: calc(-242px + 100vh); overflow-y: scroll; }
       `}</style>
     </div>
   );
