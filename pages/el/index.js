@@ -112,7 +112,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
         if (outputRef.current) {
             outputRef.current.scrollTop = outputRef.current.scrollHeight;
         }
-    }, [output, error]);
+    }, [output, error, prOut]);
 
     const handleBranchChange = async (nB) => {
         await runCmd(`git checkout ${nB}`, path);
