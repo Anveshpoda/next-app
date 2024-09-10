@@ -91,7 +91,7 @@ output_file="/home/anveshpoda/sandbox/next-app/logs/hotfix_jira_urls.log"
 if [ -z "$unique_jira_ids" ]; then
   echo "No unique JIRA IDs found in the commits to be merged."
 else
-  echo "Unique JIRA IDs to be merged:"
+  echo "JIRA IDs to be merged:"
   while IFS= read -r id; do
     url="https://jdjira.justdial.com/browse/$id"
     echo "$url" | tee -a "$output_file"

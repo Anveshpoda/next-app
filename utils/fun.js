@@ -36,10 +36,10 @@ export const slackLog = async (debug, user) => {
     } catch (e) { console.log('Error  >> ', e); }
 }
 
-export const createMr = async (repo, source, target, title, desc) => {
+export const createMr = async (repo, source, target, title, desc, path) => {
     if (!repo || !source || !target || !title) return ({ code: 0, err: "Invalid Data To Create MR" })
 
-    let Jid = getJiraId(title, source, desc || '/home/anveshpoda/sandbox/El_staging')
+    let Jid = getJiraId(title, source, path || '/home/anveshpoda/sandbox/El_staging')
     if (!Jid) return ({ code: 0, msg: "Error", err: "Jira Id Not Found" })
 
     let dt = {
@@ -47,7 +47,7 @@ export const createMr = async (repo, source, target, title, desc) => {
         "source_branch": source,
         "target_branch": target,
         "title": title,
-        "description": desc,
+        "description": desc.replace(/\n/g, '<br>'),
         "reviewer_ids": [424],
         "assignee_id": 424
     }
