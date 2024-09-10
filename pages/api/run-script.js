@@ -87,15 +87,3 @@ export default function handler(req, res) {
         });
     });
 }
-
-const takeLive = async (res) => {
-    let dt = await createMr("next_monorepo","hotFix","dev","Test")
-    if(dt.code == 0 || dt.data.message) return res.status(500).json(dt)
-  
-    slackLog(dt.data.web_url)
-    slackLog(dt.data.web_url, "anvesh")
-
-    res.write(`\n${dt.data.web_url}`);
-    res.write(`\n${JSON.stringify(dt)}`);
-    res.end();
-}

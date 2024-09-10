@@ -4,11 +4,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { runCmd } from '@/utils/fun';
 import moment from 'moment';
 
-const Hotfix = ({ output, error, outputRef, ...props }) => {
+const Hotfix = ({ output, error, outputRef, prOut, ...props }) => {
   const [logData, setLogData] = useState('')
   const [logList, setLogList] = useState([])
 
   useEffect(() => { getLogList() }, [])
+  useEffect(() => { setLogData('') }, [output, error, prOut])
+  
 
   const sortedFd = (fd) => fd.sort((a, b) => {
     const format = '[log_]HH-mm__DD-MM-YYYY[.txt]';
@@ -59,6 +61,7 @@ const Hotfix = ({ output, error, outputRef, ...props }) => {
         {(output || error || logData) && (
           <div ref={outputRef} className="tranBg" style={{ maxHeight: 'calc(100vh - 242px)', width: '100%', overflow: 'scroll', marginTop: 10, padding: 10, borderRadius: 10 }}>
             {output && <pre>{output}</pre>}
+            {prOut && <pre>{prOut}</pre>}
             <pre style={{ whiteSpace: 'pre-wrap' }}>{logData}</pre>
             {error && <pre style={{ color: 'red' }}>{error}</pre>}
           </div>
