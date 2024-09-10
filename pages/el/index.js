@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button, CircularProgress } from '@mui/material';
-import { createMr, runCmd } from '@/utils/fun';
+import { createMr, runCmd, slackLog } from '@/utils/fun';
 import Select from '@/components/UI/select';
 import Hotfix from './hotfix';
 const path = '/home/anveshpoda/sandbox/El_staging';
@@ -31,7 +31,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
     const takeLive = async () => {
 
 
-        let desc = await fetch(`/api/getFileData?type=hotfix&fileName=${encodeURIComponent('hotfix_jira_urls.log')}`)
+        let desc = await fetch(`/api/getFileData?fileName=${encodeURIComponent('hotfix_jira_urls.log')}`)
             .then(response => response.json())
             .then(data => { console.log('data >> ', data); return data.content })
             .catch(error => console.error('Error fetching log content:', error));
