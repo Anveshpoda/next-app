@@ -38,12 +38,12 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
 
         console.log('desc >> ',desc)
 
-        // let dt = await createMr("MSITE", "el-hotfix", "master", " El-Hotfix")
-        let dt = await createMr("mpa_app", "development", "pre-prod", "JIRA-ELWM-6955", desc)
+        let dt = await createMr("MSITE", "el-hotfix", "master", " El-Hotfix", "", desc)
+        // let dt = await createMr("mpa_app", "development", "pre-prod", "JIRA-ELWM-6955", desc)
 
         if (dt.code == 0 || dt.data.message) return setError(dt.code)
 
-        // slackLog(dt.data.web_url)
+        slackLog(dt.data.web_url)
         slackLog(dt.data.web_url, "anvesh")
         setPrOut(dt)
     }
