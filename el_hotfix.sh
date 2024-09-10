@@ -84,14 +84,20 @@ extract_unique_jira_ids() {
 
 unique_jira_ids=$(extract_unique_jira_ids "$commit_messages")
 
+output_file="./logs/hotfix_jira_urls.log"
+
+> "$output_file"
+
 if [ -z "$unique_jira_ids" ]; then
   echo "No unique JIRA IDs found in the commits to be merged."
 else
   echo "Unique JIRA IDs to be merged:"
   while IFS= read -r id; do
-    echo "https://jdjira.justdial.com/browse/$id"
+    url="https://jdjira.justdial.com/browse/$id"
+    echo "$url" | tee -a "$output_file"
   done <<< "$unique_jira_ids"
 fi
+
 
 echo " "
 echo " "
