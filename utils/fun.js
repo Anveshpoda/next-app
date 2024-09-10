@@ -52,7 +52,7 @@ export const createMr = async (repo, source, target, title, desc, path) => {
         "assignee_id": 424
     }
 
-    console.log('createMr dt >> ',dt, desc)
+    console.log('createMr dt >> ', dt, Jid)
 
     try {
         // let gitApi = await fetch(`http://192.168.12.250:900/api/v4/projects/root%2F${repo}/merge_requests`, {

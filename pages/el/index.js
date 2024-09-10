@@ -36,9 +36,9 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
             .then(data => { console.log('data >> ', data); return data.content })
             .catch(error => console.error('Error fetching log content:', error));
 
-        console.log('desc >> ',desc)
+        console.log('desc >> ', desc)
 
-        let dt = await createMr("MSITE", "el-hotfix", "master", " El-Hotfix", "", desc)
+        let dt = await createMr("MSITE", "el-hotfix", "master", " El-Hotfix", desc)
         // let dt = await createMr("mpa_app", "development", "pre-prod", "JIRA-ELWM-6955", desc)
 
         if (dt.code == 0 || dt.data.message) return setError(dt.code)
