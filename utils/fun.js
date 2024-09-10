@@ -78,8 +78,7 @@ export const getJiraId = async (title, branch, path) => {
     try {
         if (!branch || typeof branch !== 'string') throw new Error('Invalid branch name');
         const commitMessage = await runCmd(`git show -s --format=%B $(git rev-parse origin/${branch})`, path);
-        console.log('commitMessage >> ',commitMessage)
-        const match = commitMessage.match(/JIRA-[A-Za-z0-9]{1,8}-\d{1,10}/);
+        const match = commitMessage.data?.match(/JIRA-[A-Za-z0-9]{1,8}-\d{1,10}/);
         return match ? `JIRA-${match[0]} ${title || ''}` : null;
 
     } catch (error) { console.error('Error fetching JIRA ID from commit:', error); return null; }
