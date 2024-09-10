@@ -48,7 +48,6 @@ const Hotfix = ({ output, error, outputRef, prOut, ...props }) => {
           <Typography>Advance Options</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          {console.log('props.extraOpt.createMr >> ', props.extraOpt.createMr)}
           <FormControlLabel control={<Checkbox name="checkbox1" checked={props.extraOpt.createMr || false} onChange={(e, n) => { props.setExtraOpt({ ...props.extraOpt, createMr: n }) }} />} label="Create Mr to Live" />
           {/* <FormControlLabel control={<Checkbox name="checkbox2" />} label="Checkbox 2" /> */}
         </AccordionDetails>
