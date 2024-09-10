@@ -39,7 +39,7 @@ export const slackLog = async (debug, user) => {
 export const createMr = async (repo, source, target, title, desc, path) => {
     if (!repo || !source || !target || !title) return ({ code: 0, err: "Invalid Data To Create MR" })
 
-    let Jid = getJiraId(title, source, path || '/home/anveshpoda/sandbox/El_staging')
+    let Jid = await getJiraId(title, source, path || '/home/anveshpoda/sandbox/El_staging')
     if (!Jid) return ({ code: 0, msg: "Error", err: "Jira Id Not Found" })
 
     let dt = {
@@ -52,7 +52,7 @@ export const createMr = async (repo, source, target, title, desc, path) => {
         "assignee_id": 424
     }
 
-    console.log('createMr dt >> ',dt)
+    console.log('createMr dt >> ',dt, desc)
 
     try {
         // let gitApi = await fetch(`http://192.168.12.250:900/api/v4/projects/root%2F${repo}/merge_requests`, {
