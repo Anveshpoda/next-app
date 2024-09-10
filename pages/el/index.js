@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button, CircularProgress } from '@mui/material';
-import { runCmd } from '@/utils/fun';
+import { createMr, runCmd } from '@/utils/fun';
 import Select from '@/components/UI/select';
 import Hotfix from './hotfix';
 const path = '/home/anveshpoda/sandbox/El_staging';
@@ -15,6 +15,7 @@ const selSx = {
 const El_new = ({ branchName: initialBranchName, branchList }) => {
     const [output, setOutput] = useState('');
     const [extraOpt, setExtraOpt] = useState({});
+    const [prOut, setPrOut] = useState({});
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [color, setColor] = useState('');
@@ -27,16 +28,25 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
         console.log('props test >> ', { branchName: initialBranchName, branchList });
     }, [initialBranchName, branchList]);
 
-    const takeLive = async (res) => {
-        let dt = await createMr("mpa_app", "development", "pre-prod", "JIRA-ELWM-6955")
-        if (dt.code == 0 || dt.data.message) return res.status(500).json(dt)
-      
+    const takeLive = async () => {
+
+
+        let desc = await fetch(`/api/getFileData?type=hotfix&fileName=${encodeURIComponent('hotfix_jira_urls.log')}`)
+            .then(response => response.json())
+            .then(data => { console.log('data >> ', data); return data.content })
+            .catch(error => console.error('Error fetching log content:', error));
+
+        console.log('desc >> ',desc)
+
+        // let dt = await createMr("MSITE", "el-hotfix", "master", " El-Hotfix")
+        let dt = await createMr("mpa_app", "development", "pre-prod", "JIRA-ELWM-6955", desc?.content)
+
+        if (dt.code == 0 || dt.data.message) return setError(dt.code)
+
         // slackLog(dt.data.web_url)
         slackLog(dt.data.web_url, "anvesh")
-      
-        res.write(`\n${JSON.stringify(dt)}`);
-        res.end();
-      }
+        setPrOut(dt)
+    }
 
     const runScript = async (force = 0) => {
         console.log('force >> ', force)
@@ -81,6 +91,10 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
 
             if (success) {
                 setColor('green');
+                if (script == "hotfix" && extraOpt.createMr) {
+                    takeLive();
+                    setExtraOpt({ ...extraOpt, createMr: false })
+                }
             } else {
                 setColor('red');
                 setError('Failed to run script');
@@ -110,7 +124,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
     return (
         <div style={{ margin: 10 }}>
             <div>
-                <h1 style={{ display: 'inline-flex', margin:'10px 0' }}>EL Staging Script</h1>
+                <h1 style={{ display: 'inline-flex', margin: '10px 0' }}>EL Staging Script</h1>
 
                 <div style={{ display: 'inline-flex', float: 'right' }}>
                     <Select value={selectedBranch} onChange={handleBranchChange} list={branchList} sx={selSx} />
@@ -132,7 +146,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
                     Force Update
                 </Button>
             )}
-            {script == "hotfix" && <Hotfix outputRef={outputRef} output={output} error={error} extraOpt={extraOpt} setExtraOpt={setExtraOpt}/>}
+            {script == "hotfix" && <Hotfix color={color} outputRef={outputRef} output={output} error={error} extraOpt={extraOpt} setExtraOpt={setExtraOpt} prOut={prOut} />}
             {script != "hotfix" && (output || error) && (
                 <div ref={outputRef} className="tranBg" style={{ maxHeight: 'calc(100vh - 184px)', overflow: 'scroll', marginTop: 10, padding: 10 }}>
                     {output && <pre>{output}</pre>}
