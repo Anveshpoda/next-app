@@ -84,7 +84,7 @@ extract_unique_jira_ids() {
 
 unique_jira_ids=$(extract_unique_jira_ids "$commit_messages")
 
-output_file="logs/hotfix_jira_urls.log"
+output_file="/home/anveshpoda/sandbox/next-app/logs/hotfix_jira_urls.log"
 
 > "$output_file"
 
