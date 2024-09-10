@@ -55,17 +55,17 @@ export const createMr = async (repo, source, target, title, desc, path) => {
     console.log('createMr dt >> ', dt, Jid)
 
     try {
-        // let gitApi = await fetch(`http://192.168.12.250:900/api/v4/projects/root%2F${repo}/merge_requests`, {
-        //     method: 'post',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Private-Token': 'glpat-3HTzB_U5qXvHthA5ACqr'
-        //     },
-        //     body: JSON.stringify(dt),
-        // })
-        // let res = await gitApi.json()
-        // if (!gitApi.ok) return ({ code: 0, msg: "Error creating merge request ", data: res })
-        return ({ code: 1, msg: "Success", data: res || '' })
+        let gitApi = await fetch(`http://192.168.12.250:900/api/v4/projects/root%2F${repo}/merge_requests`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'Private-Token': 'glpat-3HTzB_U5qXvHthA5ACqr'
+            },
+            body: JSON.stringify(dt),
+        })
+        let res = await gitApi.json()
+        if (!gitApi.ok) return ({ code: 0, msg: "Error creating merge request ", data: res })
+        return ({ code: 1, msg: "Success", data: res })
     } catch (e) { console.log('Error  >> ', e); return ({ code: 0, msg: "Error", err: e }) }
 }
 
