@@ -15,7 +15,7 @@ const selSx = {
 const El_new = ({ branchName: initialBranchName, branchList }) => {
     const [output, setOutput] = useState('');
     const [extraOpt, setExtraOpt] = useState({});
-    const [prOut, setPrOut] = useState({});
+    const [prOut, setPrOut] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [color, setColor] = useState('');
