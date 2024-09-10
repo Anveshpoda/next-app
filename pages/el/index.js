@@ -50,7 +50,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
 
     const runScript = async (force = 0) => {
         console.log('force >> ', force)
-        setOutput(''); setError(''); setLoading(true); setColor(''); setForceUpdate(false);
+        setOutput(''); setError(''); setLoading(true); setColor(''); setForceUpdate(false); setPrOut('');
 
         if ((script != 'dev') && !((selectedBranch == 'el-pre-prod' && script == 'beta') || (selectedBranch == 'el-hotfix' && script == 'hotfix'))) { setError('Check The Branch and Script combination'); return setLoading(false); }
 
