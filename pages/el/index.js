@@ -45,6 +45,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
 
         slackLog(dt.data.web_url)
         slackLog(dt.data.web_url, "anvesh")
+        slackLog(dt.data.web_url, "abhinandan")
         setPrOut(dt)
     }
 

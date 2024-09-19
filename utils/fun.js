@@ -16,6 +16,7 @@ export const runCmd = async (cmd, cwd, ser) => {
 const selectUsr = (usr) => {
     switch (usr) {
         case 'anvesh': return "T02PB994V/B06NB93NJTB/uaGpWdGX6lJjzxvJEYb9MzWx"
+        case 'abhinandan': return "T02PB994V/B07GEBNKXND/bugq7z3C0OHc69fuTYK5Hzxn"
         default: return "T02PB994V/B076SQJDD60/FCpS05ujUbyGju0tRspm0aMx"
     }
 }
