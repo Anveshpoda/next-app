@@ -1,0 +1,1 @@
+export const alphavantageApiKey = 'G5YCXGKTBPF1ZXNJ'
