@@ -138,7 +138,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
                 {loading ? 'Loading...' : 'Run Script'}
             </Button>
             {(color === 'green' && script == "beta") && (
-                <Button variant="contained" color="secondary" style={{ marginLeft: 20 }} onClick={() => { window.location.href = "http://192.168.131.150:8980/job/git_update_edit-list_staging/"; }}>
+                <Button variant="contained" color="secondary" style={{ marginLeft: 20 }} onClick={() => { window.open("http://192.168.131.150:8980/job/git_update_edit-list_staging/", '_blank'); }}>
                     Run Pipeline
                 </Button>
             )}
