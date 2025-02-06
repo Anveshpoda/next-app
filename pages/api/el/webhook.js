@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ message: 'Webhook handled successfully' });
     } catch (error) {
         console.error('Error handling webhook:', error);
-        slackLog(JSON.stringify({ Msg: 'Error processing the webhook', error: error}));
+        // slackLog(JSON.stringify({ Msg: 'Error processing the webhook', error: error}));
         return res.status(500).json({ message: 'Error processing the webhook', error: error });
     }
     // res.status(200).json({ state: 'success', message: 'Webhook received successfully!' });
@@ -33,7 +33,7 @@ async function handlePushToBranch(data) {
     if (branch === 'dev') {
         const DESIRED_BRANCH = 'dev';
         await runShellScript(TARGET_DIR, DESIRED_BRANCH, PM2_APP_NAME);
-    }if (branch === 'sandbox') {
+    } if (branch === 'sandbox') {
         const DESIRED_BRANCH = 'sandbox';
         await runShellScript(TARGET_DIR, DESIRED_BRANCH, PM2_APP_NAME);
     } else {
@@ -76,10 +76,12 @@ async function runShellScript(targetDir, desiredBranch, pm2AppName) {
         exec(`bash ${scriptPath} ${targetDir} ${desiredBranch} ${pm2AppName}`, (error, stdout, stderr) => {
             if (error) {
                 console.error(`Error executing script: ${error.message}`);
+                slackLog(JSON.stringify({ Msg: `Error executing script: ${error.message}` }));
                 reject(new Error(`Error executing script: ${error.message}`));
             }
             if (stderr) {
                 console.error(`stderr: ${stderr}`);
+                slackLog(JSON.stringify({ Msg: `stderr: ${stderr}` }));
                 reject(new Error(`stderr: ${stderr}`));
             }
             console.log(`stdout: ${stdout}`);
