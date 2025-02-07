@@ -21,8 +21,8 @@ export const runScript = async (req, res, script, ...arg) => {
         });
 
         scriptProcess.on('close', (code) => {
-            if (code === 0) res.write('\nScript ran successfully');
-            else res.write(`\nScript exited with code ${code}`);
+            if (code === 0) { res.write('\nScript ran successfully'); console.log(' Script ran successfully >> ',) }
+            else { res.write(`\nScript exited with code ${code}`); console.log(' Script exited with code >> ', code) }
             // Optionally call res.end() here or later depending on your use-case.
             // res.end()
         });
