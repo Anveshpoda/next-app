@@ -39,32 +39,13 @@ async function handlePushToBranch(req, res, data) {
 
     if (branch === 'dev') {
         const DESIRED_BRANCH = 'dev';
-        await runScript(req, res, scriptPath, TARGET_DIR, DESIRED_BRANCH, PM2_APP_NAME);
+        // await runScript(req, res, scriptPath, TARGET_DIR, DESIRED_BRANCH, PM2_APP_NAME);
     } else if (branch === 'sandbox') {
         const DESIRED_BRANCH = 'sandbox';
         await runScript(req, res, scriptPath, TARGET_DIR, DESIRED_BRANCH, PM2_APP_NAME);
     } else {
         console.log(`Push to non-dev branch: ${branch}, ignoring.`);
     }
+    return res.end()
 }
 
-// async function runShellScript(targetDir, desiredBranch, pm2AppName) {
-//     return new Promise((resolve, reject) => {
-//         // Ensure all variables are strings
-//         const cmd = `bash ${String(scriptPath)} ${String(targetDir)} ${String(desiredBranch)} ${String(pm2AppName)}`;
-//         exec(cmd, (error, stdout, stderr) => {
-//             if (error) {
-//                 console.error(`Error executing script: ${error.message}`);
-//                 slackLog(JSON.stringify({ Msg: `Error executing script: ${error.message}` }));
-//                 return reject(new Error(`Error executing script: ${error.message}`));
-//             }
-//             if (stderr) {
-//                 console.error(`stderr: ${stderr}`);
-//                 slackLog(JSON.stringify({ Msg: `stderr: ${stderr}` }));
-//                 return reject(new Error(`stderr: ${stderr}`));
-//             }
-//             console.log(`stdout: ${stdout}`);
-//             resolve(stdout.toString());
-//         });
-//     });
-// }
