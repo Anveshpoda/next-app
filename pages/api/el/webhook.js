@@ -8,6 +8,7 @@ export default async function handler(req, res) {
 
     if (!query.force && req.method !== 'POST') return res.status(405).json({ message: 'Only POST requests are allowed' });
 
+    if (query.force && query.branch) { data.ref = data.ref ?? ('refs/heads/'.query.branch); data.event_name = data.event_name ?? 'push' }
     try {
         await handlePushToBranch(data);
         return res.status(200).json({ message: 'Webhook handled successfully' });
