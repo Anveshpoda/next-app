@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
     try {
         await handlePushToBranch(req, res, data);
-        return res.status(200).json({ message: 'Webhook handled successfully' });
+        // return res.status(200).json({ message: 'Webhook handled successfully' });
     } catch (error) {
         console.error('Error handling webhook:', error);
         // Send only error.message to ensure it is a string
