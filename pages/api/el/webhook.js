@@ -3,7 +3,7 @@ import { exec } from 'child_process';
 const scriptPath = 'El_new_dev_update.sh';
 
 export default async function handler(req, res) {
-    const { query, body: data } = req
+    const { query, body: data = {} } = req
     // slackLog(JSON.stringify({ Msg: 'Webhook received successfully!', body, query }));
 
     if (!query.force && req.method !== 'POST') return res.status(405).json({ message: 'Only POST requests are allowed' });
