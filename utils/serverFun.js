@@ -2,7 +2,7 @@ import { spawn } from 'child_process';
 import path from 'path';
 import compression from 'compression';
 
-export const runScript = async (req, res, script, ...arg) => {
+export const runScript = async (req, res, end, script, ...arg) => {
     const compressionMiddleware = compression();
 
     compressionMiddleware(req, res, () => {
@@ -24,7 +24,7 @@ export const runScript = async (req, res, script, ...arg) => {
             if (code === 0) { res.write('\nScript ran successfully'); console.log(' Script ran successfully >> ',) }
             else { res.write(`\nScript exited with code ${code}`); console.log(' Script exited with code >> ', code) }
             // Optionally call res.end() here or later depending on your use-case.
-            // res.end()
+            end && res.end()
         });
 
         scriptProcess.on('error', (error) => {

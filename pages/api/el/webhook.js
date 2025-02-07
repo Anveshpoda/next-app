@@ -42,10 +42,11 @@ async function handlePushToBranch(req, res, data) {
         // await runScript(req, res, scriptPath, TARGET_DIR, DESIRED_BRANCH, PM2_APP_NAME);
     } else if (branch === 'sandbox') {
         const DESIRED_BRANCH = 'sandbox';
-        await runScript(req, res, scriptPath, TARGET_DIR, DESIRED_BRANCH, PM2_APP_NAME);
+        await runScript(req, res, true, scriptPath, TARGET_DIR, DESIRED_BRANCH, PM2_APP_NAME);
+        console.log('Script was running >> ',)
     } else {
         console.log(`Push to non-dev branch: ${branch}, ignoring.`);
     }
-    return res.end()
+    
 }
 
