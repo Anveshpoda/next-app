@@ -1,4 +1,5 @@
-import { runScript, slackLog } from "@/utils/fun";
+import { slackLog } from "@/utils/fun";
+import { runScript } from "@/utils/serverFun";
 import { exec } from 'child_process';
 const scriptPath = 'El_new_dev_update.sh';
 
