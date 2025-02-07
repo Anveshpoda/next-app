@@ -2,36 +2,46 @@ import { spawn } from 'child_process';
 import path from 'path';
 import compression from 'compression';
 
-export const runScript = async (req, res, end, script, ...arg) => {
-    const compressionMiddleware = compression();
+export const runScript = (req, res, end, script, ...args) => {
+    return new Promise((resolve, reject) => {
+        const compressionMiddleware = compression();
 
-    compressionMiddleware(req, res, () => {
-        const scriptPath = path.resolve(script);
-        // Pass extra arguments using the spread operator
-        const scriptProcess = spawn('bash', [scriptPath, ...arg]);
+        compressionMiddleware(req, res, () => {
+            const scriptPath = path.resolve(script);
+            console.log(`Running script: ${scriptPath} with args: ${args.join(' ')}`);
 
-        scriptProcess.stdout.on('data', (data) => {
-            res.write(data);
-            if (res.flush) res.flush();
+            const scriptProcess = spawn('bash', [scriptPath, ...args]);
+
+            scriptProcess.stdout.on('data', (data) => {
+                res.write(data);
+                if (res.flush) res.flush();
+            });
+
+            scriptProcess.stderr.on('data', (data) => {
+                res.write(data);
+                if (res.flush) res.flush();
+            });
+
+            scriptProcess.on('close', (code) => {
+                if (code === 0) {
+                    console.log('Script ran successfully');
+                    res.write('\nScript ran successfully');
+                    resolve();
+                } else {
+                    console.error(`Script exited with code ${code}`);
+                    res.write(`\nScript exited with code ${code}`);
+                    reject(new Error(`Script exited with code ${code}`));
+                }
+                if (end) res.end();
+            });
+
+            scriptProcess.on('error', (error) => {
+                console.error(`Error executing script: ${error.message}`);
+                res.status(500).end(`Failed to run script: ${error.message}`);
+                reject(error);
+            });
+
+            res.on('close', () => scriptProcess.kill());
         });
-
-        scriptProcess.stderr.on('data', (data) => {
-            res.write(data);
-            if (res.flush) res.flush();
-        });
-
-        scriptProcess.on('close', (code) => {
-            if (code === 0) { res.write('\nScript ran successfully'); console.log(' Script ran successfully >> ',) }
-            else { res.write(`\nScript exited with code ${code}`); console.log(' Script exited with code >> ', code) }
-            // Optionally call res.end() here or later depending on your use-case.
-            end && res.end()
-        });
-
-        scriptProcess.on('error', (error) => {
-            console.error(`Error executing script: ${error}`);
-            res.status(500).end(`Failed to run script: ${error.message}`);
-        });
-
-        res.on('close', () => scriptProcess.kill());
     });
-}
+};
