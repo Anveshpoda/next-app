@@ -12,12 +12,12 @@ module.exports = (phase) => {
   console.log(`isDev:${isDev}  isProd:${isProd} isSandbox:${isSandbox}`)
 
   const BASE_PATH = '';
-  let domain = 'http://localhost:2024'
-  let domain_ip = 'https://127.0.0.1:2024'
+  let domain = 'http://localhost:4321'
+  let domain_ip = 'https://127.0.0.1:4321'
 
   if (isSandbox) {
-    domain = 'http://anveshpoda.blrsoftware.jd:2024'
-    domain_ip = 'http://192.168.40.172:2024'
+    domain = 'http://anveshpoda.blrsoftware.jd:4321'
+    domain_ip = 'http://192.168.40.172:4321'
   }
 
   const env = {
