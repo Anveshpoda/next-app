@@ -3,6 +3,7 @@ import { Button, CircularProgress } from '@mui/material';
 import { createMr, runCmd, slackLog } from '@/utils/fun';
 import Select from '@/components/UI/select';
 import Hotfix from './hotfix';
+import ServicesTooltip from './servicesTooltip';
 const path = '/home/anveshpoda/sandbox/El_staging';
 
 const selSx = {
@@ -128,6 +129,7 @@ const El_new = ({ branchName: initialBranchName, branchList }) => {
                 <h1 style={{ display: 'inline-flex', margin: '10px 0' }}>EL Staging Script</h1>
 
                 <div style={{ display: 'inline-flex', float: 'right' }}>
+                    <ServicesTooltip/>
                     <Select value={selectedBranch} onChange={handleBranchChange} list={branchList} sx={selSx} />
                 </div>
             </div>
