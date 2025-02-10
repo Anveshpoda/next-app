@@ -1,5 +1,6 @@
 import SelectField from '@/components/UI/Form/select';
 import InputField from '@/components/UI/inputField';
+import Linkify from 'react-linkify';
 import { useState } from 'react';
 
 export default function myApi() {
@@ -20,7 +21,8 @@ export default function myApi() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +30,6 @@ export default function myApi() {
     setError('');
     setApiResponse(null);
 
-    // Build the query string. Mapping "ename" to the API's "ename"
     const params = new URLSearchParams({
       mobile: formData.mobile,
       docId: formData.docId,
@@ -40,10 +41,8 @@ export default function myApi() {
       host: formData.host,
     });
 
-    const queryParams = new URLSearchParams(formData).toString();
-
     try {
-      const res = await fetch(`/api/el/myApi?${queryParams}`);
+      const res = await fetch(`/api/el/myApi?${params.toString()}`);
       if (!res.ok) throw new Error('Network response was not ok');
 
       const data = await res.json();
@@ -58,13 +57,14 @@ export default function myApi() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      {/* Increase the max width to allow side-by-side content */}
+      {/* Main container */}
       <div className="bg-white shadow-lg rounded-lg p-8 w-full">
         <h1 className="text-2xl font-bold mb-6 text-gray-800">API Caller</h1>
 
-        {/* Flex container: stacks on mobile, row layout on md+ */}
-        <div className="flex flex-col md:flex-row gap-8 max-w-500">
-          <form onSubmit={handleSubmit} className="flex-1">
+        {/* Flex container: stacks vertically on mobile and side-by-side on md+ */}
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Form Section */}
+          <form onSubmit={handleSubmit} className="flex-1 min-w-[400px] max-w-[600px]">
             <div className="grid grid-cols-1 gap-4">
               <InputField
                 label="Mobile"
@@ -163,17 +163,30 @@ export default function myApi() {
               {loading ? 'Loading...' : 'Call API'}
             </button>
           </form>
-        </div>
 
-        {/* API Response Section */}
-        {apiResponse && (
-          <div className="flex-1">
-            <h2 className="text-xl font-bold mb-2">API Response:</h2>
-            <pre className="bg-gray-100 p-4 rounded-md text-sm overflow-x-auto">
-              {JSON.stringify(apiResponse, null, 2)}
-            </pre>
-          </div>
-        )}
+          {/* API Response Section (renders only when data exists) */}
+          {apiResponse && (
+            <div className="flex-1">
+              <h2 className="text-xl font-bold mb-2">API Response:</h2>
+              <pre className="bg-gray-100 p-4 rounded-md text-sm overflow-x-auto whitespace-pre-wrap break-words" >
+                <Linkify
+                  componentDecorator={(decoratedHref, decoratedText, key) => (
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={decoratedHref}
+                      key={key}
+                    >
+                      {decoratedText}
+                    </a>
+                  )}
+                >
+                  {JSON.stringify(apiResponse, null, 2)}
+                </Linkify>
+              </pre>
+            </div>
+          )}
+        </div>
 
         {/* Display errors, if any */}
         {error && <div className="mt-4 text-red-500">Error: {error}</div>}
