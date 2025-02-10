@@ -10,25 +10,15 @@ export default function Home() {
     <>
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.description}>
+          <div className='font-bold '>Anvesh</div>
           <p>
             Get started by editing&nbsp;
             <code className={styles.code}>pages/index.js</code>
           </p>
           <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app" target="_blank" rel="noopener noreferrer" >
               By Anvesh {' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
+              <Image src="/vercel.svg" alt="Vercel Logo" className={styles.vercelLogo} width={100} height={24} priority />
             </a>
           </div>
         </div>
