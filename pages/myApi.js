@@ -168,7 +168,7 @@ export default function myApi() {
           {apiResponse && (
             <div className="flex-1">
               <h2 className="text-xl font-bold mb-2">API Response:</h2>
-              <pre className="bg-gray-100 p-4 rounded-md text-sm overflow-x-auto whitespace-pre-wrap break-words" >
+              <pre className="bg-gray-100 p-4 rounded-md text-sm overflow-x-auto whitespace-pre-wrap break-all" >
                 <Linkify
                   componentDecorator={(decoratedHref, decoratedText, key) => (
                     <a
