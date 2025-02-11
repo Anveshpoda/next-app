@@ -37,7 +37,7 @@ const ApiPop = ({ show, onClose, ...props }) => {
     useEffect(() => {
         let fd = sessionData('apiData')
         if (fd) setFormData({ ...formData, ...fd })
-    }, [sessionData('apiData')])
+    }, [])
 
 
     return (
