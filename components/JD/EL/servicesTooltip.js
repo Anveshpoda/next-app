@@ -48,10 +48,8 @@ const ServicesDropdown = () => {
                         >
                             CheckApi
                         </li>
-                        <li
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => handleAction('Update Credentials')}
-                        >
+                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() => handleAction('Update Credentials')}>
                             Update Credentials
                         </li>
                     </ul>

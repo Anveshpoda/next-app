@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import { createMr, runCmd, slackLog } from '@/utils/fun';
 import Select from '@/components/UI/select';
-import Hotfix from './hotfix';
-import ServicesTooltip from './servicesTooltip';
+import Hotfix from '../../components/JD/EL/hotfix';
+import ServicesTooltip from '../../components/JD/EL/servicesTooltip';
 const path = '/home/anveshpoda/sandbox/El_staging';
 
 const selSx = {
