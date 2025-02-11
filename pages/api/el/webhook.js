@@ -21,6 +21,7 @@ export default async function handler(req, res) {
 }
 
 async function handlePushToBranch(req, res, data) {
+    const { dir, pm2name } = req.query;
     const branch = String(data.ref).replace("refs/heads/", "");
     if (data.event_name !== "push") {
         console.log("Not a push event, ignoring.");
@@ -29,8 +30,8 @@ async function handlePushToBranch(req, res, data) {
     console.log(`Push detected for branch: ${branch}`);
 
     // Deployment parameters (customize as needed)
-    const TARGET_DIR = "/home/anveshpoda/sandbox/EL";
-    const PM2_APP_NAME = "EL";
+    const TARGET_DIR = dir || "/home/anveshpoda/sandbox/EL";
+    const PM2_APP_NAME = pm2name || "EL";
 
     const script = "El_new_dev_update.sh";
 
