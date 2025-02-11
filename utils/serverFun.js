@@ -1,5 +1,6 @@
 import { spawn } from "child_process";
 import path from "path";
+import fs from "fs";
 import compression from "compression";
 
 export const runScript = (req, res, end, script, ...args) => {
@@ -12,24 +13,20 @@ export const runScript = (req, res, end, script, ...args) => {
 
             if (host) {
                 const target = user ? `${user}@${host}` : host;
-                // The remote command assumes that "script" is available on the remote host.
-                // If it's just a filename, it must be in the remote user's PATH or the correct working directory.
-                const remoteCmd = ["bash", script, ...args];
-                if (pass) {
-                    child = spawn("sshpass", ["-p", pass, "ssh", target, ...remoteCmd]);
-                } else {
-                    child = spawn("ssh", [target, ...remoteCmd]);
-                }
-                console.log(
-                    `Executing remote script: ${script} on ${target} with args: ${args.join(" ")}`
-                );
+                const remoteCmd = ["bash", "-s", ...args];
+                if (pass) child = spawn("sshpass", ["-p", pass, "ssh", target, ...remoteCmd]);
+                else child = spawn("ssh", [target, ...remoteCmd]);
+
+                console.log(`Executing remote script from local file: ${script} on ${target} with args: ${args.join(" ")}`);
+
+                // Pipe the local script file's content into the remote bash via stdin.
+                const localScriptPath = path.resolve(script);
+                const scriptStream = fs.createReadStream(localScriptPath);
+                scriptStream.pipe(child.stdin);
             } else {
-                // Fallback to local execution (if needed)
                 const localScript = path.resolve(script);
                 child = spawn("bash", [localScript, ...args]);
-                console.log(
-                    `Executing local script: ${localScript} with args: ${args.join(" ")}`
-                );
+                console.log(`Executing local script: ${localScript} with args: ${args.join(" ")}`);
             }
 
             child.stdout.on("data", (data) => {
