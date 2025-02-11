@@ -39,5 +39,6 @@ async function handlePushToBranch(req, res, data) {
         console.log("Script execution finished");
     } else {
         console.log(`Push to branch ${branch} ignored.`);
+        return res.status(200).json({ message: `Push to branch ${branch} ignored.` });
     }
 }
