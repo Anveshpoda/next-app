@@ -1,32 +1,31 @@
+import ApiPop from '@/components/JD/ApiPop';
 import React, { useState, useEffect, useRef } from 'react';
 
 const ServicesDropdown = () => {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const [showApiPop, setShowApiPop] = useState(false);
 
-    // Toggle the dropdown on button click
-    const toggleDropdown = () => {
-        setOpen((prev) => !prev);
-    };
+    const toggleDropdown = () => setOpen((prev) => !prev);
 
-    // Optional: Close the dropdown if a click occurs outside of it
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setOpen(false);
-            }
-        };
+        const handleClickOutside = (event) => { if (dropdownRef.current && !dropdownRef.current.contains(event.target)) setOpen(false); };
         document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     // Handle click on individual service actions
     const handleAction = (action) => {
         console.log(`Action clicked: ${action}`);
-        // Insert your action handling logic here.
-        // Optionally, you can close the dropdown after an action by calling: setOpen(false);
+        switch (action) {
+            case 'CheckApi': setShowApiPop(true); break;
+            case 'Update Credentials':
+                console.log('Update Credentials clicked');
+                break;
+            default: console.log('Invalid action');
+        }
+
+        setOpen(false);
     };
 
     return (
@@ -58,6 +57,7 @@ const ServicesDropdown = () => {
                     </ul>
                 )}
             </div>
+            <ApiPop show={showApiPop} onClose={() => setShowApiPop(false)} />
         </div>
     );
 };

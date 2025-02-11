@@ -13,6 +13,23 @@ export const runCmd = async (cmd, cwd, ser) => {
     }
 }
 
+export const sessionData = (key, val, type) => {
+    try {
+        if (type === 'remove') sessionStorage.removeItem(key)
+        else if (val) {
+            if (typeof val === 'object') val = JSON.stringify(val)
+            sessionStorage.setItem(key, val)
+        } else {
+            let data = sessionStorage.getItem(key)
+            if (JSON.parse(data)) return JSON.parse(data)
+            return data
+        }
+    } catch (e) {
+        console.log('getSessionData error :>> ', e);
+        return false
+    }
+}
+
 const selectUsr = (usr) => {
     switch (usr) {
         case 'anvesh': return "T02PB994V/B06NB93NJTB/uaGpWdGX6lJjzxvJEYb9MzWx"

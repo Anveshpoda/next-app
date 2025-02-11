@@ -1,4 +1,4 @@
-const InputField = ({ id, label, type = 'text', className = '', value, onChange, error = false, ...props }) => {
+const InputField = ({ id, label, info, type = 'text', className = '', value, onChange, error = false, ...props }) => {
     return (
         <div className="">
             <div className="relative">
@@ -13,6 +13,7 @@ const InputField = ({ id, label, type = 'text', className = '', value, onChange,
                     </label>
                 )}
             </div>
+            {info && (<p className="mt-1 text-sm text-gray-500">{info}</p>)}
             {error && (<p className="mt-1 text-sm text-red-500">{error}</p>)}
             <style jsx>{`
                 input:not(:placeholder-shown) + label { top: -10px; font-size: 0.75rem; color: ${error ? '#ef4444' : '#3b82f6'}; }
