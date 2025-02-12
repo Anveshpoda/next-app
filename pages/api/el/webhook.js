@@ -30,7 +30,7 @@ async function handlePushToBranch(req, res, data) {
     console.log(`Push detected for branch: ${branch}`);
 
     // Deployment parameters (customize as needed)
-    const TARGET_DIR = dir || "/home/anveshpoda/sandbox/EL";
+    const TARGET_DIR = dir // || "/home/anveshpoda/sandbox/EL";
     const PM2_APP_NAME = pm2name || "EL";
 
     const script = "El_new_dev_update.sh";
