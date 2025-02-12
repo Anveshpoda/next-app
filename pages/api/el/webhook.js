@@ -35,11 +35,14 @@ async function handlePushToBranch(req, res, data) {
 
     const script = "El_new_dev_update.sh";
 
-    if (branch === "sandbox") {
-        await runScript(req, res, true, script, TARGET_DIR, branch, PM2_APP_NAME);
-        console.log("Script execution finished");
-    } else {
-        console.log(`Push to branch ${branch} ignored.`);
-        return res.status(200).json({ message: `Push to branch ${branch} ignored.` });
-    }
+    await runScript(req, res, true, script, TARGET_DIR, branch, PM2_APP_NAME);
+    console.log("Script execution finished");
+
+    // if (branch === "sandbox") {
+    //     await runScript(req, res, true, script, TARGET_DIR, branch, PM2_APP_NAME);
+    //     console.log("Script execution finished");
+    // } else {
+    //     console.log(`Push to branch ${branch} ignored.`);
+    //     return res.status(200).json({ message: `Push to branch ${branch} ignored.` });
+    // }
 }
