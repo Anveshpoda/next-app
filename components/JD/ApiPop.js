@@ -27,6 +27,7 @@ const ApiPop = ({ show, onClose, ...props }) => {
             rsvnInfo: formData.rsvnInfo,
             multiDocData: formData.multiDocData,
             ename: formData.ename,
+            eid: formData.eid,
             host: formData.host,
         });
         sessionData('apiData', formData)
